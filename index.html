@@ -2,800 +2,941 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>JACKCASINO DEMO</title>
+<title>Jack Casino Demo</title>
 
 <style>
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-    width:100%;
-    min-height:100%;
-    background:#050817;
-    color:white;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
-
-body{
-    overflow-x:hidden;
-}
-
 /* =========================
-   ОСНОВА
+   RESET
 ========================= */
 
-.app{
-    min-height:100vh;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #070914;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* =========================
+   MAIN APP
+========================= */
+
+.app {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% -10%, #27224b 0%, transparent 40%),
+        linear-gradient(180deg, #090a18 0%, #05060d 100%);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 70px;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(8, 9, 20, 0.94);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #ff2b60;
+}
+
+.nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav button {
+    background: transparent;
+    color: #9295a7;
+
+    padding: 10px 15px;
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+.nav button.active,
+.nav button:hover {
+    color: white;
+    background: rgba(255,255,255,0.06);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.balance {
+    padding: 10px 14px;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.07);
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.profile {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg,#ff2b60,#8d2bff);
+
+    font-weight: 900;
+}
+
+
+/* =========================
+   LOBBY
+========================= */
+
+.lobby {
+    padding: 25px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.hero {
+    min-height: 280px;
+
+    border-radius: 24px;
+
+    padding: 35px;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
 
     background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(76,53,170,.35),
-            transparent 35%
-        ),
-        linear-gradient(
-            180deg,
-            #070a20 0%,
-            #050817 100%
-        );
+        radial-gradient(circle at 80% 40%, rgba(255,130,25,.35), transparent 35%),
+        linear-gradient(135deg,#18142d,#090a16);
+
+    border: 1px solid rgba(255,255,255,.08);
 }
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -50px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(circle,
+        rgba(255,164,43,.3),
+        transparent 65%
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-small {
+    color: #ffb32e;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    font-size: clamp(35px,6vw,65px);
+    line-height: .95;
+
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #a9acbb;
+    max-width: 420px;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+}
+
+.play-button {
+    padding: 14px 24px;
+
+    border-radius: 13px;
+
+    color: white;
+
+    background: linear-gradient(135deg,#ff315f,#b41dff);
+
+    font-weight: 900;
+
+    box-shadow: 0 10px 30px rgba(255,40,100,.2);
+}
+
+.play-button:active {
+    transform: scale(.96);
+}
+
 
 /* =========================
-   ВЕРХНЯЯ ПАНЕЛЬ
+   CATEGORIES
 ========================= */
 
-.header{
+.categories {
+    display: flex;
+    gap: 8px;
 
-    height:72px;
+    overflow-x: auto;
 
-    display:flex;
-    align-items:center;
+    margin: 25px 0 18px;
 
-    padding:0 18px;
-
-    gap:20px;
-
-    background:rgba(5,8,23,.95);
-
-    border-bottom:1px solid rgba(255,255,255,.07);
-
-    position:sticky;
-    top:0;
-
-    z-index:100;
+    scrollbar-width: none;
 }
 
-/* ЛОГО */
-
-.logo{
-
-    font-size:30px;
-
-    font-weight:1000;
-
-    letter-spacing:-2px;
-
-    color:#ff285d;
-
-    line-height:1;
+.categories::-webkit-scrollbar {
+    display: none;
 }
 
-.logo span{
+.categories button {
+    flex-shrink: 0;
 
-    display:block;
+    padding: 10px 16px;
 
-    color:white;
+    border-radius: 30px;
 
-    font-size:7px;
+    background: rgba(255,255,255,.06);
 
-    letter-spacing:2px;
+    color: #9699aa;
 
-    text-align:center;
-
-    margin-top:5px;
+    border: 1px solid rgba(255,255,255,.05);
 }
 
-/* НАВИГАЦИЯ */
-
-.navigation{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:5px;
-
-    flex:1;
+.categories button.active {
+    background: #ff2b60;
+    color: white;
 }
 
-.navigation button{
-
-    border:none;
-
-    background:transparent;
-
-    color:#8e98ba;
-
-    padding:11px 15px;
-
-    border-radius:11px;
-
-    font-size:13px;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.navigation button:hover{
-
-    background:#151c3b;
-
-    color:white;
-}
-
-.navigation button.active{
-
-    background:#171e42;
-
-    color:white;
-}
-
-/* ПРАВАЯ ЧАСТЬ */
-
-.header-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-}
-
-.icon-button{
-
-    width:42px;
-    height:42px;
-
-    border-radius:12px;
-
-    border:1px solid #29345d;
-
-    background:#111832;
-
-    color:white;
-
-    font-size:18px;
-
-    cursor:pointer;
-}
-
-.balance{
-
-    min-width:110px;
-
-    padding:8px 11px;
-
-    text-align:center;
-
-    background:#111832;
-
-    border:1px solid #29345d;
-
-    border-radius:12px;
-}
-
-.balance strong{
-
-    display:block;
-
-    font-size:13px;
-}
-
-.balance small{
-
-    display:block;
-
-    color:#737fa6;
-
-    font-size:7px;
-
-    letter-spacing:.6px;
-
-    margin-top:3px;
-}
 
 /* =========================
-   КОНТЕНТ
+   GAMES
 ========================= */
 
-main{
+.section-title {
+    font-size: 22px;
+    font-weight: 900;
 
-    width:100%;
-
-    max-width:1250px;
-
-    margin:0 auto;
-
-    padding:20px 18px 100px;
+    margin-bottom: 15px;
 }
 
-/* =========================
-   HERO
-========================= */
+.games {
+    display: grid;
 
-.hero{
+    grid-template-columns: repeat(4,1fr);
 
-    min-height:300px;
+    gap: 15px;
+}
 
-    position:relative;
+.game-card {
+    min-height: 190px;
 
-    overflow:hidden;
+    padding: 18px;
 
-    border-radius:24px;
+    border-radius: 18px;
 
-    border:1px solid #293566;
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 
     background:
-        radial-gradient(
-            circle at 85% 40%,
-            rgba(255,166,48,.25),
-            transparent 30%
-        ),
-        linear-gradient(
-            120deg,
-            #111a3e,
-            #241638
-        );
+        radial-gradient(circle at 70% 30%,rgba(255,174,45,.25),transparent 40%),
+        linear-gradient(145deg,#201a35,#0d0e19);
 
-    display:flex;
+    border: 1px solid rgba(255,255,255,.07);
 
-    align-items:center;
+    transition: .2s;
+}
 
-    padding:35px;
+.game-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,.15);
+}
+
+.game-symbol {
+    position: absolute;
+
+    top: 30px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 60px;
+}
+
+.game-name {
+    font-weight: 900;
+}
+
+.game-provider {
+    color: #777b8d;
+
+    font-size: 11px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-navigation {
+    display: none;
+}
+
+
+/* =========================================================
+   GAME SCREEN
+========================================================= */
+
+.game-screen {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background:
+        radial-gradient(circle at 50% 30%,#39210e 0%,transparent 45%),
+        linear-gradient(180deg,#080604,#030303);
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-screen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 20;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle,#17110a,#030303 65%);
+}
+
+.loading-logo {
+    font-size: 35px;
+    font-weight: 900;
+
+    letter-spacing: 3px;
+}
+
+.loading-logo span {
+    color: #d49a32;
+}
+
+.loading-text {
+    color: #777;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    margin-top: 15px;
+}
+
+.loading-bar {
+    width: 230px;
+    height: 5px;
+
+    margin-top: 18px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #292929;
+}
+
+.loading-progress {
+    width: 0%;
+    height: 100%;
+
+    background: #d49a32;
+
+    animation: loading 1.8s linear forwards;
+}
+
+@keyframes loading {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+
+/* =========================
+   GAME CONTENT
+========================= */
+
+.game-content {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   GAME HEADER
+========================= */
+
+.game-header {
+    height: 65px;
+
+    flex-shrink: 0;
+
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(0,0,0,.45);
+
+    border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.game-header button {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.06);
+
+    color: white;
+
+    font-size: 26px;
+}
+
+.game-title {
+    text-align: center;
+
+    font-weight: 900;
+
+    font-size: 15px;
+}
+
+.game-title small {
+    display: block;
+
+    color: #8b8b8b;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    margin-top: 3px;
+}
+
+
+/* =========================
+   GAME CENTER
+========================= */
+
+.game-center {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    padding: 15px;
+}
+
+.sun-glow {
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle,
+        rgba(218,137,25,.22),
+        transparent 70%
+    );
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   REEL AREA
+========================= */
+
+.reel-area {
+    position: relative;
+
+    z-index: 5;
+
+    width: min(95vw,680px);
+
+    padding: 8px;
+}
+
+
+/* =========================
+   MULTIPLIER
+========================= */
+
+.multiplier {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+}
+
+.multiplier span {
+    min-width: 43px;
+
+    padding: 7px 8px;
+
+    text-align: center;
+
+    border-radius: 7px;
+
+    background: rgba(255,255,255,.07);
+
+    border: 1px solid rgba(255,255,255,.06);
+
+    color: #777;
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.multiplier span.active {
+    background: #a96d18;
+
+    color: white;
+
+    border-color: #dca13c;
+
+    box-shadow: 0 0 15px rgba(220,161,60,.25);
+}
+
+
+/* =========================
+   REELS 6x5
+========================= */
+
+.reels {
+    display: grid;
+
+    grid-template-columns: repeat(6,1fr);
+
+    grid-template-rows: repeat(5,1fr);
+
+    gap: 3px;
+
+    width: 100%;
+
+    padding: 7px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(145deg,#8d5b19,#3d260c);
+
+    border: 3px solid #c28a2e;
 
     box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+        0 0 30px rgba(210,139,31,.18),
+        inset 0 0 20px rgba(0,0,0,.7);
 }
 
-.hero-content{
+.reel-cell {
+    aspect-ratio: 1 / 1;
 
-    position:relative;
+    display: flex;
 
-    z-index:5;
+    align-items: center;
+    justify-content: center;
 
-    max-width:570px;
-}
-
-.hero-label{
-
-    color:#ffd15c;
-
-    font-size:10px;
-
-    font-weight:900;
-
-    letter-spacing:2px;
-
-    margin-bottom:10px;
-}
-
-.hero h1{
-
-    font-size:clamp(38px,7vw,70px);
-
-    line-height:.9;
-
-    letter-spacing:-4px;
-
-    margin-bottom:15px;
-}
-
-.hero p{
-
-    color:#aeb8d4;
-
-    font-size:14px;
-
-    line-height:1.5;
-
-    max-width:500px;
-
-    margin-bottom:22px;
-}
-
-.play-button{
-
-    border:none;
-
-    padding:14px 22px;
-
-    border-radius:13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff245b,
-            #ff557d
-        );
-
-    color:white;
-
-    font-weight:950;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 10px 30px rgba(255,35,91,.25);
-}
-
-.hero-circle{
-
-    position:absolute;
-
-    width:380px;
-
-    height:380px;
-
-    border-radius:50%;
-
-    right:-90px;
-
-    top:-40px;
+    border-radius: 6px;
 
     background:
         radial-gradient(
-            circle,
-            rgba(255,194,75,.35),
-            rgba(255,100,30,.05) 55%,
-            transparent 70%
-        );
-}
-
-.hero-sun{
-
-    position:absolute;
-
-    width:160px;
-
-    height:160px;
-
-    border-radius:50%;
-
-    right:110px;
-
-    top:70px;
-
-    background:
-        radial-gradient(
-            circle,
-            #fff4b1,
-            #ffba38 40%,
-            #ff681e 70%,
-            transparent 72%
+            circle at 50% 40%,
+            #35240f,
+            #100d08
         );
 
-    box-shadow:
-        0 0 80px rgba(255,154,36,.4);
-}
+    border: 1px solid rgba(255,205,105,.12);
 
-/* =========================
-   КАТЕГОРИИ
-========================= */
+    color: #ffd873;
 
-.categories{
+    font-size: clamp(20px,6vw,45px);
 
-    display:flex;
-
-    gap:8px;
-
-    overflow-x:auto;
-
-    padding:18px 0 5px;
-
-    scrollbar-width:none;
-}
-
-.categories::-webkit-scrollbar{
-    display:none;
-}
-
-.category{
-
-    white-space:nowrap;
-
-    padding:10px 15px;
-
-    border-radius:11px;
-
-    background:#101632;
-
-    border:1px solid #27335d;
-
-    color:#929dc0;
-
-    font-size:12px;
-
-    font-weight:850;
-
-    cursor:pointer;
-}
-
-.category.active{
-
-    background:#ff285d;
-
-    color:white;
-
-    border-color:#ff285d;
-}
-
-/* =========================
-   ЗАГОЛОВКИ
-========================= */
-
-.section-header{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    margin:25px 0 13px;
-}
-
-.section-header h2{
-
-    font-size:20px;
-}
-
-.section-header button{
-
-    border:none;
-
-    background:transparent;
-
-    color:#ff4d78;
-
-    font-weight:850;
-
-    cursor:pointer;
-}
-
-/* =========================
-   ВРЕМЕННЫЕ КАРТОЧКИ
-========================= */
-
-.games{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:13px;
-}
-
-.game-card{
-
-    overflow:hidden;
-
-    border-radius:16px;
-
-    border:1px solid #27335d;
-
-    background:#0e1530;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.game-card:hover{
-
-    transform:translateY(-3px);
-
-    border-color:#485a96;
-}
-
-.game-image{
-
-    aspect-ratio:1.45;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.game-image::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:160px;
-
-    height:160px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.3),
-            transparent 70%
-        );
-}
-
-.game-symbol{
-
-    position:relative;
-
-    z-index:2;
-
-    font-size:60px;
+    font-weight: 900;
 
     text-shadow:
-        0 5px 20px rgba(0,0,0,.5);
+        0 0 10px rgba(255,185,45,.4),
+        0 2px 3px #000;
+
+    user-select: none;
+
+    transition: .15s;
 }
 
-.game-info{
-
-    padding:11px;
+.reel-cell:hover {
+    background: #3b2810;
 }
 
-.game-name{
-
-    font-size:14px;
-
-    font-weight:900;
-}
-
-.game-provider{
-
-    color:#7884aa;
-
-    font-size:9px;
-
-    text-transform:uppercase;
-
-    letter-spacing:.7px;
-
-    margin-top:4px;
-}
-
-/* разные цвета карточек */
-
-.card-1{
-    background:linear-gradient(135deg,#4d170d,#d68b22);
-}
-
-.card-2{
-    background:linear-gradient(135deg,#1b367d,#62bce6);
-}
-
-.card-3{
-    background:linear-gradient(135deg,#28134e,#c02e72);
-}
-
-.card-4{
-    background:linear-gradient(135deg,#274b16,#d1a52f);
-}
-
-.card-5{
-    background:linear-gradient(135deg,#101d43,#7b2332);
-}
-
-.card-6{
-    background:linear-gradient(135deg,#51191d,#e4a12e);
-}
-
-.card-7{
-    background:linear-gradient(135deg,#162d61,#c8a348);
-}
-
-.card-8{
-    background:linear-gradient(135deg,#123d62,#73d4ec);
-}
 
 /* =========================
-   НИЖНЯЯ НАВИГАЦИЯ
+   GAME FOOTER
 ========================= */
 
-.bottom-navigation{
+.game-footer {
+    min-height: 90px;
 
-    display:none;
+    flex-shrink: 0;
 
+    padding: 10px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 35px;
+
+    background: rgba(0,0,0,.65);
+
+    border-top: 1px solid rgba(255,255,255,.05);
 }
 
-/* =========================
-   МОБИЛЬНАЯ ВЕРСИЯ
-========================= */
+.game-stat {
+    color: #777;
 
-@media(max-width:800px){
+    text-align: center;
 
-    .header{
+    font-size: 9px;
 
-        height:64px;
+    letter-spacing: 1px;
+}
 
-        padding:0 10px;
+.game-stat strong {
+    display: block;
 
-        gap:10px;
+    color: white;
+
+    margin-top: 5px;
+
+    font-size: 14px;
+}
+
+.fake-spin {
+    width: 65px;
+    height: 65px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(145deg,#e4aa42,#8e5a12);
+
+    border: 4px solid #4e310a;
+
+    color: white;
+
+    font-size: 30px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.6),
+        0 0 25px rgba(230,165,55,.15);
+}
+
+.fake-spin:active {
+    transform: scale(.92);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .header {
+        height: 60px;
+        padding: 0 15px;
     }
 
-    .logo{
-
-        font-size:27px;
+    .logo {
+        font-size: 19px;
     }
 
-    .navigation{
-
-        display:none;
+    .nav {
+        display: none;
     }
 
-    .header-right{
-
-        margin-left:auto;
+    .balance {
+        font-size: 12px;
+        padding: 8px 10px;
     }
 
-    .header-right .icon-button{
-
-        display:none;
+    .profile {
+        width: 34px;
+        height: 34px;
     }
 
-    .balance{
-
-        min-width:95px;
+    .lobby {
+        padding: 15px;
+        padding-bottom: 80px;
     }
 
-    main{
+    .hero {
+        min-height: 260px;
 
-        padding:10px 10px 90px;
+        padding: 25px;
+
+        border-radius: 20px;
     }
 
-    .hero{
-
-        min-height:330px;
-
-        padding:25px 20px;
-
-        align-items:flex-start;
+    .hero h1 {
+        font-size: 42px;
     }
 
-    .hero h1{
+    .games {
+        grid-template-columns: repeat(2,1fr);
 
-        font-size:42px;
+        gap: 10px;
     }
 
-    .hero-circle{
+    .game-card {
+        min-height: 165px;
 
-        right:-150px;
+        border-radius: 15px;
 
-        top:70px;
+        padding: 14px;
     }
 
-    .hero-sun{
-
-        right:10px;
-
-        top:100px;
-
-        opacity:.45;
+    .game-symbol {
+        font-size: 48px;
     }
 
-    .games{
+    .bottom-navigation {
+        display: flex;
 
-        grid-template-columns:
-            repeat(2,1fr);
+        position: fixed;
 
-        gap:9px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        height: 65px;
+
+        z-index: 90;
+
+        align-items: center;
+        justify-content: space-around;
+
+        background: rgba(8,9,18,.95);
+
+        border-top: 1px solid rgba(255,255,255,.07);
+
+        backdrop-filter: blur(15px);
     }
 
-    .game-symbol{
+    .bottom-navigation button {
+        background: transparent;
 
-        font-size:45px;
+        color: #777;
+
+        font-size: 11px;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 3px;
     }
 
-    .bottom-navigation{
-
-        display:flex;
-
-        position:fixed;
-
-        left:0;
-        right:0;
-        bottom:0;
-
-        height:72px;
-
-        z-index:200;
-
-        background:rgba(9,14,35,.97);
-
-        border-top:1px solid #29345e;
-
-        backdrop-filter:blur(15px);
-
-        padding-bottom:env(safe-area-inset-bottom);
+    .bottom-navigation button.active {
+        color: #ff2b60;
     }
 
-    .bottom-navigation button{
-
-        flex:1;
-
-        border:none;
-
-        background:transparent;
-
-        color:#7e89ac;
-
-        font-size:10px;
-
-        font-weight:850;
+    .game-center {
+        padding: 8px;
     }
 
-    .bottom-navigation button strong{
-
-        display:block;
-
-        font-size:21px;
-
-        margin-bottom:3px;
+    .reel-area {
+        width: 100%;
     }
 
-    .bottom-navigation button.active{
+    .reels {
+        gap: 2px;
+        padding: 5px;
 
-        color:#ff2b60;
+        border-width: 2px;
+
+        border-radius: 11px;
+    }
+
+    .reel-cell {
+        border-radius: 4px;
+
+        font-size: clamp(18px,8vw,34px);
+    }
+
+    .multiplier {
+        gap: 4px;
+
+        margin-bottom: 5px;
+    }
+
+    .multiplier span {
+        min-width: 37px;
+
+        padding: 5px 5px;
+
+        font-size: 10px;
+    }
+
+    .game-footer {
+        min-height: 82px;
+
+        gap: 18px;
+
+        padding: 8px;
+    }
+
+    .fake-spin {
+        width: 58px;
+        height: 58px;
+
+        font-size: 26px;
+    }
+
+    .game-stat strong {
+        font-size: 12px;
     }
 }
 
 </style>
 </head>
 
+
 <body>
 
-<div class="app">
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+<!-- =====================================================
+     LOBBY
+===================================================== -->
+
+<div class="app">
 
     <header class="header">
 
         <div class="logo">
-            JACK
-            <span>CASINO DEMO</span>
+            JACK <span>CASINO</span>
         </div>
 
-        <nav class="navigation">
+        <nav class="nav">
 
             <button class="active">
-                Главная
-            </button>
-
-            <button>
-                Слоты
-            </button>
-
-            <button>
-                Популярные
+                Игры
             </button>
 
             <button>
@@ -803,47 +944,28 @@ main{
             </button>
 
             <button>
-                Jackpots
+                Популярное
             </button>
 
         </nav>
 
         <div class="header-right">
 
-            <button class="icon-button">
-                ⌕
-            </button>
-
-            <button class="icon-button">
-                ♡
-            </button>
-
             <div class="balance">
-
-                <strong>
-                    10 000 JC
-                </strong>
-
-                <small>
-                    ВИРТУАЛЬНЫЙ БАЛАНС
-                </small>
-
+                <span id="lobbyBalance">10 000 JC</span>
             </div>
 
-            <button class="icon-button">
-                ●
-            </button>
+            <div class="profile">
+                J
+            </div>
 
         </div>
 
     </header>
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+    <main class="lobby">
 
-    <main>
 
         <!-- HERO -->
 
@@ -851,8 +973,8 @@ main{
 
             <div class="hero-content">
 
-                <div class="hero-label">
-                    ORIGINAL DEMO • FEATURED
+                <div class="hero-small">
+                    JACK STUDIOS ORIGINAL
                 </div>
 
                 <h1>
@@ -861,22 +983,18 @@ main{
                 </h1>
 
                 <p>
-                    Египетская атмосфера,
-                    каскады и множители.
-                    Здесь пока только виртуальные JC.
+                    Демонстрационная игра с виртуальной валютой.
+                    Никаких реальных ставок.
                 </p>
 
-                <button class="play-button" id="playDemo">
-
+                <button
+                    class="play-button"
+                    id="playDemo"
+                >
                     ИГРАТЬ DEMO
-
                 </button>
 
             </div>
-
-            <div class="hero-circle"></div>
-
-            <div class="hero-sun"></div>
 
         </section>
 
@@ -885,419 +1003,628 @@ main{
 
         <div class="categories">
 
-            <button class="category active">
+            <button class="active">
                 Все
             </button>
 
-            <button class="category">
-                Египет
+            <button>
+                Слоты
             </button>
 
-            <button class="category">
-                Fruit
+            <button>
+                Новинки
             </button>
 
-            <button class="category">
-                Luxury
+            <button>
+                Популярное
             </button>
 
-            <button class="category">
-                Mythology
-            </button>
-
-            <button class="category">
-                Adventure
+            <button>
+                Избранное
             </button>
 
         </div>
 
 
-        <!-- RECOMMENDED -->
+        <!-- GAMES -->
 
-        <section>
+        <div class="section-title">
+            Игры
+        </div>
 
-            <div class="section-header">
+        <div class="games">
 
-                <h2>
-                    Рекомендуем
-                </h2>
 
-                <button>
-                    Все игры →
-                </button>
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ☀
+                </div>
+
+                <div class="game-name">
+                    Fury of the Sun
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
 
             </div>
 
 
-            <div class="games">
+            <div class="game-card">
 
-
-                <div class="game-card">
-
-                    <div class="game-image card-1">
-
-                        <div class="game-symbol">
-                            ☥
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Fury of the Sun
-                        </div>
-
-                        <div class="game-provider">
-                            Jack Studios
-                        </div>
-
-                    </div>
-
+                <div class="game-symbol">
+                    ◆
                 </div>
 
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-2">
-
-                        <div class="game-symbol">
-                            ⚡
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Gates of Thunder
-                        </div>
-
-                        <div class="game-provider">
-                            Myth Forge
-                        </div>
-
-                    </div>
-
+                <div class="game-name">
+                    Desert Crown
                 </div>
 
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-3">
-
-                        <div class="game-symbol">
-                            ★
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Candy Palace
-                        </div>
-
-                        <div class="game-provider">
-                            Sugar Forge
-                        </div>
-
-                    </div>
-
+                <div class="game-provider">
+                    JACK STUDIOS
                 </div>
-
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-4">
-
-                        <div class="game-symbol">
-                            ♛
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Shining Crown
-                        </div>
-
-                        <div class="game-provider">
-                            Golden Reel
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-5">
-
-                        <div class="game-symbol">
-                            ♠
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Billy Noir
-                        </div>
-
-                        <div class="game-provider">
-                            Noir Forge
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-6">
-
-                        <div class="game-symbol">
-                            🐉
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Dragon Vault
-                        </div>
-
-                        <div class="game-provider">
-                            Golden Reel
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-7">
-
-                        <div class="game-symbol">
-                            ❖
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Divine Ice
-                        </div>
-
-                        <div class="game-provider">
-                            Frost Byte
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="game-card">
-
-                    <div class="game-image card-8">
-
-                        <div class="game-symbol">
-                            ⚓
-                        </div>
-
-                    </div>
-
-                    <div class="game-info">
-
-                        <div class="game-name">
-                            Pirate Vault
-                        </div>
-
-                        <div class="game-provider">
-                            Jack Studios
-                        </div>
-
-                    </div>
-
-                </div>
-
 
             </div>
 
-        </section>
 
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ✦
+                </div>
+
+                <div class="game-name">
+                    Golden Temple
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ☥
+                </div>
+
+                <div class="game-name">
+                    Pharaoh's Gold
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ◈
+                </div>
+
+                <div class="game-name">
+                    Royal Sands
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ✧
+                </div>
+
+                <div class="game-name">
+                    Sun Temple
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    ♛
+                </div>
+
+                <div class="game-name">
+                    King's Fortune
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+                <div class="game-symbol">
+                    🜲
+                </div>
+
+                <div class="game-name">
+                    Ancient Gold
+                </div>
+
+                <div class="game-provider">
+                    JACK STUDIOS
+                </div>
+
+            </div>
+
+
+        </div>
 
     </main>
 
 
-    <!-- =========================
-         MOBILE NAVIGATION
-    ========================== -->
+    <!-- BOTTOM NAV -->
 
-    <nav class="bottom-navigation">
+    <div class="bottom-navigation">
 
         <button class="active">
-
-            <strong>⌂</strong>
-
+            <span>⌂</span>
             Главная
-
         </button>
 
         <button>
-
-            <strong>♜</strong>
-
-            Слоты
-
+            <span>◈</span>
+            Игры
         </button>
 
         <button>
-
-            <strong>♡</strong>
-
+            <span>♡</span>
             Избранное
-
         </button>
 
         <button>
-
-            <strong>●</strong>
-
+            <span>●</span>
             Профиль
-
         </button>
 
-    </nav>
+    </div>
 
 </div>
 
 
+
+<!-- =====================================================
+     GAME SCREEN
+===================================================== -->
+
+<div
+    class="game-screen"
+    id="gameScreen"
+>
+
+
+    <!-- LOADING -->
+
+    <div
+        class="loading-screen"
+        id="loadingScreen"
+    >
+
+        <div class="loading-logo">
+
+            JACK
+            <span>STUDIOS</span>
+
+        </div>
+
+        <div class="loading-text">
+            ЗАГРУЗКА ИГРЫ
+        </div>
+
+        <div class="loading-bar">
+
+            <div class="loading-progress"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- GAME -->
+
+    <div class="game-content">
+
+
+        <!-- GAME HEADER -->
+
+        <div class="game-header">
+
+            <button id="closeGame">
+                ‹
+            </button>
+
+            <div class="game-title">
+
+                JACK STUDIOS
+
+                <small>
+                    ORIGINAL DEMO
+                </small>
+
+            </div>
+
+            <button id="menuButton">
+                ☰
+            </button>
+
+        </div>
+
+
+
+        <!-- GAME CENTER -->
+
+        <div class="game-center">
+
+            <div class="sun-glow"></div>
+
+
+            <div class="reel-area">
+
+
+                <!-- MULTIPLIERS -->
+
+                <div class="multiplier">
+
+                    <span class="active">
+                        x1
+                    </span>
+
+                    <span>
+                        x2
+                    </span>
+
+                    <span>
+                        x4
+                    </span>
+
+                    <span>
+                        x8
+                    </span>
+
+                    <span>
+                        x16
+                    </span>
+
+                </div>
+
+
+                <!-- 6 x 5 FIELD -->
+
+                <div
+                    class="reels"
+                    id="reels"
+                ></div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="game-footer">
+
+
+            <div class="game-stat">
+
+                БАЛАНС
+
+                <strong id="gameBalance">
+                    10 000 JC
+                </strong>
+
+            </div>
+
+
+            <button
+                class="fake-spin"
+                id="spinButton"
+            >
+                ↻
+            </button>
+
+
+            <div class="game-stat">
+
+                СТАВКА
+
+                <strong>
+                    20 JC
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
 <script>
 
-/* =====================================
-   ПОКА ТОЛЬКО ПРОВЕРКА КНОПОК
-===================================== */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-const playButton =
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const loadingScreen =
+    document.getElementById("loadingScreen");
+
+const playDemo =
     document.getElementById("playDemo");
 
-playButton.addEventListener(
+const closeGame =
+    document.getElementById("closeGame");
+
+const spinButton =
+    document.getElementById("spinButton");
+
+const reels =
+    document.getElementById("reels");
+
+
+/* =====================================================
+   VIRTUAL BALANCE
+===================================================== */
+
+let balance = 10000;
+
+
+/* =====================================================
+   SYMBOLS
+===================================================== */
+
+const reelSymbols = [
+
+    "☥",
+    "◆",
+    "◇",
+    "✦",
+    "✧",
+    "☀",
+    "◈",
+    "♛",
+    "𓂀",
+    "✹"
+
+];
+
+
+/* =====================================================
+   CREATE 6x5 FIELD
+===================================================== */
+
+function createReels() {
+
+    reels.innerHTML = "";
+
+    for (let i = 0; i < 30; i++) {
+
+        const cell =
+            document.createElement("div");
+
+        cell.className =
+            "reel-cell";
+
+        cell.textContent =
+            getRandomSymbol();
+
+        reels.appendChild(cell);
+
+    }
+
+}
+
+
+/* =====================================================
+   RANDOM SYMBOL
+===================================================== */
+
+function getRandomSymbol() {
+
+    const randomIndex =
+        Math.floor(
+            Math.random() * reelSymbols.length
+        );
+
+    return reelSymbols[randomIndex];
+
+}
+
+
+/* =====================================================
+   RANDOMIZE FIELD
+===================================================== */
+
+function randomizeReels() {
+
+    const cells =
+        document.querySelectorAll(".reel-cell");
+
+    cells.forEach(function(cell) {
+
+        cell.style.transform =
+            "translateY(-8px)";
+
+        cell.style.opacity =
+            "0.3";
+
+    });
+
+
+    setTimeout(function() {
+
+        cells.forEach(function(cell) {
+
+            cell.textContent =
+                getRandomSymbol();
+
+            cell.style.transform =
+                "translateY(8px)";
+
+        });
+
+
+        setTimeout(function() {
+
+            cells.forEach(function(cell) {
+
+                cell.style.transform =
+                    "translateY(0)";
+
+                cell.style.opacity =
+                    "1";
+
+            });
+
+        },80);
+
+    },120);
+
+}
+
+
+/* =====================================================
+   OPEN GAME
+===================================================== */
+
+function openGame() {
+
+    gameScreen.style.display =
+        "block";
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    createReels();
+
+
+    loadingScreen.style.display =
+        "flex";
+
+
+    setTimeout(function() {
+
+        loadingScreen.style.display =
+            "none";
+
+    },1800);
+
+}
+
+
+/* =====================================================
+   CLOSE GAME
+===================================================== */
+
+function closeGameScreen() {
+
+    gameScreen.style.display =
+        "none";
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =====================================================
+   PLAY BUTTON
+===================================================== */
+
+playDemo.addEventListener(
     "click",
-    function(){
+    function() {
 
-        alert(
-            "Первый этап работает. Экран игры добавим следующим этапом."
-        );
+        openGame();
 
     }
 );
 
 
-/* КАТЕГОРИИ */
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
 
-const categories =
-    document.querySelectorAll(".category");
+closeGame.addEventListener(
+    "click",
+    function() {
 
-categories.forEach(
-    function(button){
-
-        button.addEventListener(
-            "click",
-            function(){
-
-                categories.forEach(
-                    function(item){
-
-                        item.classList.remove("active");
-
-                    }
-                );
-
-                button.classList.add("active");
-
-            }
-        );
+        closeGameScreen();
 
     }
 );
 
 
-/* ВЕРХНЯЯ НАВИГАЦИЯ */
+/* =====================================================
+   SPIN
+===================================================== */
 
-const navigationButtons =
-    document.querySelectorAll(".navigation button");
+spinButton.addEventListener(
+    "click",
+    function() {
 
-navigationButtons.forEach(
-    function(button){
-
-        button.addEventListener(
-            "click",
-            function(){
-
-                navigationButtons.forEach(
-                    function(item){
-
-                        item.classList.remove("active");
-
-                    }
-                );
-
-                button.classList.add("active");
-
-            }
-        );
+        randomizeReels();
 
     }
 );
 
 
-/* МОБИЛЬНАЯ НАВИГАЦИЯ */
+/* =====================================================
+   MENU BUTTON
+===================================================== */
 
-const bottomButtons =
-    document.querySelectorAll(
-        ".bottom-navigation button"
+document
+    .getElementById("menuButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            alert(
+                "Меню добавим на следующем этапе."
+            );
+
+        }
     );
 
-bottomButtons.forEach(
-    function(button){
 
-        button.addEventListener(
-            "click",
-            function(){
+/* =====================================================
+   INITIAL FIELD
+===================================================== */
 
-                bottomButtons.forEach(
-                    function(item){
-
-                        item.classList.remove("active");
-
-                    }
-                );
-
-                button.classList.add("active");
-
-            }
-        );
-
-    }
-);
+createReels();
 
 </script>
 
