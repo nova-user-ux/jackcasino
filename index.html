@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#08080c">
+<title>JackCasino</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:#08080c;
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button{
+    font:inherit;
+    color:inherit;
+    border:0;
+    cursor:pointer;
+}
+
+.app{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    margin:auto;
+    padding-bottom:90px;
+}
+
+.header{
+    padding:22px 18px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo span{
+    color:#9b5cff;
+}
+
+.balance{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:#13131a;
+    border:1px solid #24242e;
+    padding:9px 12px;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:800;
+}
+
+.coin{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#c99cff,#7136ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    font-weight:900;
+}
+
+.page{
+    display:none;
+    padding:8px 16px;
+}
+
+.page.active{
+    display:block;
+}
+
+.hero{
+    margin-top:8px;
+    padding:22px;
+    border-radius:24px;
+    background:
+        radial-gradient(circle at 90% 0%,rgba(145,77,255,.3),transparent 45%),
+        linear-gradient(145deg,#17121f,#0e0e14);
+    border:1px solid #292332;
+}
+
+.hero small{
+    color:#9993a8;
+    font-weight:700;
+}
+
+.hero h1{
+    margin:7px 0 5px;
+    font-size:29px;
+}
+
+.hero p{
+    margin:0;
+    color:#9f9aaa;
+    font-size:14px;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:25px 3px 12px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:19px;
+}
+
+.section-title span{
+    color:#8e849c;
+    font-size:12px;
+}
+
+.game-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.game-card{
+    position:relative;
+    min-height:145px;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid #27242f;
+    background:linear-gradient(145deg,#19161f,#0f0f14);
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.game-card.disabled{
+    opacity:.7;
+}
+
+.game-icon{
+    font-size:38px;
+}
+
+.game-card h3{
+    margin:0;
+    font-size:16px;
+}
+
+.game-card p{
+    margin:4px 0 0;
+    color:#898391;
+    font-size:11px;
+}
+
+.play{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    border-radius:11px;
+    background:#8b4cff;
+    font-weight:800;
+}
+
+.play:active{
+    transform:scale(.97);
+}
+
+.slot{
+    margin-top:10px;
+}
+
+.slot-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.back{
+    background:#15151c;
+    border:1px solid #282831;
+    padding:9px 12px;
+    border-radius:11px;
+}
+
+.slot-title{
+    text-align:center;
+    flex:1;
+}
+
+.slot-title h2{
+    margin:0;
+    font-size:21px;
+}
+
+.slot-title span{
+    color:#898393;
+    font-size:11px;
+}
+
+.machine{
+    background:
+        radial-gradient(circle at 50% 0%,rgba(146,76,255,.3),transparent 45%),
+        linear-gradient(150deg,#1a1522,#0d0d12);
+    border:1px solid #30263d;
+    border-radius:26px;
+    padding:16px;
+    box-shadow:0 15px 50px rgba(0,0,0,.35);
+}
+
+.reels{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.reel{
+    height:112px;
+    border-radius:16px;
+    background:#09090d;
+    border:1px solid #2c2932;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:43px;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+}
+
+.reel.spin{
+    animation:spin .42s linear infinite;
+}
+
+@keyframes spin{
+    0%{transform:translateY(-7px)}
+    50%{transform:translateY(7px)}
+    100%{transform:translateY(-7px)}
+}
+
+.result{
+    min-height:25px;
+    text-align:center;
+    padding:13px 5px 5px;
+    font-weight:900;
+}
+
+.result.win{
+    color:#b887ff;
+}
+
+.result.big{
+    color:#ffd76a;
+    font-size:20px;
+}
+
+.bet-area{
+    margin-top:15px;
+    background:#111117;
+    border:1px solid #24242d;
+    padding:14px;
+    border-radius:18px;
+}
+
+.bet-label{
+    color:#8d8796;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.bet-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+.bet{
+    background:#1b1a22;
+    border:1px solid #2c2933;
+    padding:11px 5px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:800;
+}
+
+.bet.selected{
+    background:#8248e8;
+    border-color:#9d69ff;
+}
+
+.spin-button{
+    width:100%;
+    margin-top:12px;
+    padding:16px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#9d5cff,#6330c7);
+    font-size:17px;
+    font-weight:950;
+    box-shadow:0 8px 25px rgba(126,65,230,.25);
+}
+
+.spin-button:disabled{
+    opacity:.5;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.stat{
+    background:#111117;
+    border:1px solid #24242d;
+    border-radius:16px;
+    padding:14px;
+}
+
+.stat small{
+    color:#77717f;
+}
+
+.stat strong{
+    display:block;
+    margin-top:5px;
+    font-size:18px;
+}
+
+.rank-card{
+    background:#111117;
+    border:1px solid #26242d;
+    border-radius:18px;
+    padding:13px;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.rank-number{
+    width:34px;
+    height:34px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#1b1921;
+    font-weight:900;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#000;
+    border:1px solid #34313d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+.rank-info{
+    flex:1;
+}
+
+.rank-info strong{
+    display:block;
+}
+
+.rank-info small{
+    color:#77717f;
+}
+
+.rank-coins{
+    font-weight:900;
+    color:#bd91ff;
+}
+
+.profile{
+    text-align:center;
+}
+
+.profile-avatar{
+    width:86px;
+    height:86px;
+    margin:15px auto;
+    border-radius:50%;
+    background:#000;
+    border:2px solid #332d3e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+}
+
+.profile-name{
+    font-size:22px;
+    font-weight:900;
+}
+
+.profile-level{
+    color:#8e8498;
+    margin-top:4px;
+}
+
+.reward{
+    margin-top:20px;
+    padding:20px;
+    border-radius:20px;
+    background:linear-gradient(145deg,#1a1424,#100f15);
+    border:1px solid #30263d;
+}
+
+.reward h3{
+    margin:0 0 6px;
+}
+
+.reward p{
+    color:#898391;
+    font-size:13px;
+}
+
+.reward button{
+    width:100%;
+    padding:13px;
+    border-radius:13px;
+    background:#8c4dff;
+    font-weight:900;
+}
+
+.reward button:disabled{
+    opacity:.4;
+}
+
+.bottom{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    max-width:520px;
+    margin:auto;
+    height:74px;
+    background:rgba(9,9,13,.94);
+    backdrop-filter:blur(20px);
+    border-top:1px solid #24232b;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    z-index:20;
+}
+
+.nav{
+    background:none;
+    color:#77717f;
+    font-size:10px;
+    font-weight:700;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+}
+
+.nav-icon{
+    font-size:21px;
+}
+
+.nav.active{
+    color:#ad7aff;
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:88px;
+    transform:translateX(-50%) translateY(20px);
+    background:#1c1921;
+    border:1px solid #37313f;
+    padding:12px 16px;
+    border-radius:13px;
+    font-size:13px;
+    font-weight:800;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:50;
+    white-space:nowrap;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(min-width:600px){
+    .bottom{
+        border-radius:20px 20px 0 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+    <div class="logo">JACK<span>CASINO</span></div>
+
+    <div class="balance">
+        <div class="coin">JC</div>
+        <span id="balance">10 000</span>
+    </div>
+</header>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+    <div class="hero">
+        <small>WELCOME TO JACKCASINO</small>
+        <h1>Играй. Собирай JC.</h1>
+        <p>Твой игровой мир начинается здесь.</p>
+    </div>
+
+    <div class="section-title">
+        <h2>🔥 Популярное</h2>
+        <span>JackCasino</span>
+    </div>
+
+    <div class="game-grid">
+
+        <div class="game-card">
+            <div class="game-icon">🎰</div>
+            <div>
+                <h3>Jack 7</h3>
+                <p>Classic • 96.4% RTP</p>
+            </div>
+            <button class="play" onclick="openSlot()">ИГРАТЬ</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">💎</div>
+            <div>
+                <h3>Diamond Vault</h3>
+                <p>Скоро</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">🔥</div>
+            <div>
+                <h3>Wild Fire</h3>
+                <p>Скоро</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">👑</div>
+            <div>
+                <h3>Royal Jack</h3>
+                <p>Скоро</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SLOTS -->
+<section id="slots" class="page">
+
+    <div class="section-title">
+        <h2>🎰 Слоты</h2>
+        <span>1 / 50+</span>
+    </div>
+
+    <div class="game-grid">
+
+        <div class="game-card">
+            <div class="game-icon">7️⃣</div>
+            <div>
+                <h3>Jack 7</h3>
+                <p>Classic Slot</p>
+            </div>
+            <button class="play" onclick="openSlot()">ИГРАТЬ</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">💎</div>
+            <div>
+                <h3>Diamond Vault</h3>
+                <p>Coming soon</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">🍒</div>
+            <div>
+                <h3>Cherry Rush</h3>
+                <p>Coming soon</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+        <div class="game-card disabled">
+            <div class="game-icon">🐺</div>
+            <div>
+                <h3>Wild Wolf</h3>
+                <p>Coming soon</p>
+            </div>
+            <button class="play" onclick="soon()">СКОРО</button>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SLOT -->
+<section id="slot" class="page">
+
+    <div class="slot">
+
+        <div class="slot-top">
+            <button class="back" onclick="showPage('home')">← Назад</button>
+
+            <div class="slot-title">
+                <h2>Jack 7</h2>
+                <span>CLASSIC SLOT</span>
+            </div>
+
+            <div style="width:65px"></div>
+        </div>
+
+        <div class="machine">
+
+            <div class="reels">
+                <div class="reel" id="r1">🍒</div>
+                <div class="reel" id="r2">7️⃣</div>
+                <div class="reel" id="r3">💎</div>
+            </div>
+
+            <div id="result" class="result">
+                Выбери ставку
+            </div>
+
+            <div class="bet-area">
+
+                <div class="bet-label">СТАВКА</div>
+
+                <div class="bet-buttons">
+
+                    <button class="bet selected" data-bet="10">10 JC</button>
+                    <button class="bet" data-bet="25">25 JC</button>
+                    <button class="bet" data-bet="50">50 JC</button>
+                    <button class="bet" data-bet="100">100 JC</button>
+                    <button class="bet" data-bet="250">250 JC</button>
+                    <button class="bet" data-bet="500">500 JC</button>
+
+                </div>
+
+                <button id="spin" class="spin-button">
+                    🎰 SPIN
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <small>Спинов</small>
+                <strong id="spins">0</strong>
+            </div>
+
+            <div class="stat">
+                <small>Лучший выигрыш</small>
+                <strong id="bestWin">0 JC</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- RANK -->
+<section id="rank" class="page">
+
+    <div class="section-title">
+        <h2>🏆 JackRank</h2>
+        <span>Сегодня</span>
+    </div>
+
+    <div id="rankList"></div>
+
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+    <div class="profile">
+
+        <div class="profile-avatar">♠</div>
+
+        <div class="profile-name" id="playerName">
+            JackPlayer
+        </div>
+
+        <div class="profile-level">
+            Level <span id="level">1</span> • <span id="xp">0</span> XP
+        </div>
+
+        <div class="reward">
+
+            <h3>🎁 Daily Reward</h3>
+
+            <p>
+                Получай бесплатные JackCoins каждый день.
+            </p>
+
+            <button id="rewardBtn">
+                ЗАБРАТЬ 500 JC
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav class="bottom">
+
+    <button class="nav active" data-page="home">
+        <div class="nav-icon">🏠</div>
+        Главная
+    </button>
+
+    <button class="nav" data-page="slots">
+        <div class="nav-icon">🎰</div>
+        Слоты
+    </button>
+
+    <button class="nav" data-page="rank">
+        <div class="nav-icon">🏆</div>
+        JackRank
+    </button>
+
+    <button class="nav" data-page="profile">
+        <div class="nav-icon">👤</div>
+        Профиль
+    </button>
+
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* =========================
+   JACKCASINO DATA
+========================= */
+
+let balance = Number(localStorage.getItem("jc_balance"));
+
+if(!Number.isFinite(balance)){
+    balance = 10000;
+}
+
+let spins = Number(localStorage.getItem("jc_spins")) || 0;
+let bestWin = Number(localStorage.getItem("jc_best")) || 0;
+let xp = Number(localStorage.getItem("jc_xp")) || 0;
+
+let selectedBet = 10;
+let spinning = false;
+
+const symbols = [
+    "🍒",
+    "🍋",
+    "🍊",
+    "🍇",
+    "🔔",
+    "💎",
+    "7️⃣"
+];
+
+function save(){
+
+    localStorage.setItem("jc_balance",balance);
+    localStorage.setItem("jc_spins",spins);
+    localStorage.setItem("jc_best",bestWin);
+    localStorage.setItem("jc_xp",xp);
+
+    updateUI();
+}
+
+function format(n){
+    return Math.floor(n).toLocaleString("ru-RU").replace(/\u00A0/g," ");
+}
+
+function updateUI(){
+
+    document.getElementById("balance").textContent = format(balance);
+    document.getElementById("spins").textContent = spins;
+    document.getElementById("bestWin").textContent = format(bestWin)+" JC";
+
+    const level = Math.floor(xp / 100) + 1;
+
+    document.getElementById("level").textContent = level;
+    document.getElementById("xp").textContent = xp;
+}
+
+function showPage(id){
+
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav").forEach(btn=>{
+        btn.classList.toggle("active",btn.dataset.page === id);
+    });
+
+    window.scrollTo(0,0);
+}
+
+function openSlot(){
+    showPage("slot");
+}
+
+function soon(){
+    toast("Этот слот появится в следующем обновлении 🔥");
+}
+
+function toast(text){
+
+    const el = document.getElementById("toast");
+
+    el.textContent = text;
+    el.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(()=>{
+        el.classList.remove("show");
+    },1800);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+document.querySelectorAll(".nav").forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+        showPage(btn.dataset.page);
+    });
+
+});
+
+/* =========================
+   BETS
+========================= */
+
+document.querySelectorAll(".bet").forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        if(spinning) return;
+
+        document.querySelectorAll(".bet").forEach(x=>{
+            x.classList.remove("selected");
+        });
+
+        btn.classList.add("selected");
+
+        selectedBet = Number(btn.dataset.bet);
+
+        document.getElementById("result").textContent =
+            "Ставка: "+format(selectedBet)+" JC";
+    });
+
+});
+
+/* =========================
+   SLOT
+========================= */
+
+function randomSymbol(){
+    return symbols[Math.floor(Math.random()*symbols.length)];
+}
+
+function calculateWin(a,b,c,bet){
+
+    /* three equal */
+
+    if(a === b && b === c){
+
+        if(a === "7️⃣"){
+            return bet * 50;
+        }
+
+        if(a === "💎"){
+            return bet * 25;
+        }
+
+        if(a === "🔔"){
+            return bet * 15;
+        }
+
+        return bet * 10;
+    }
+
+    /* two equal */
+
+    if(a === b || b === c || a === c){
+        return bet * 2;
+    }
+
+    return 0;
+}
+
+document.getElementById("spin").addEventListener("click",()=>{
+
+    if(spinning) return;
+
+    if(balance < selectedBet){
+
+        toast("Недостаточно JC");
+
+        return;
+    }
+
+    spinning = true;
+
+    const spinButton = document.getElementById("spin");
+
+    spinButton.disabled = true;
+
+    balance -= selectedBet;
+
+    const result = document.getElementById("result");
+
+    result.className = "result";
+    result.textContent = "Крутим...";
+
+    const reels = [
+        document.getElementById("r1"),
+        document.getElementById("r2"),
+        document.getElementById("r3")
+    ];
+
+    reels.forEach(r=>{
+        r.classList.add("spin");
+    });
+
+    let interval = setInterval(()=>{
+
+        reels.forEach(r=>{
+            r.textContent = randomSymbol();
+        });
+
+    },90);
+
+    setTimeout(()=>{
+
+        clearInterval(interval);
+
+        reels.forEach(r=>{
+            r.classList.remove("spin");
+        });
+
+        const a = randomSymbol();
+        const b = randomSymbol();
+        const c = randomSymbol();
+
+        reels[0].textContent = a;
+        reels[1].textContent = b;
+        reels[2].textContent = c;
+
+        const win = calculateWin(a,b,c,selectedBet);
+
+        spins++;
+        xp += Math.max(1,Math.floor(selectedBet/10));
+
+        if(win > 0){
+
+            balance += win;
+
+            if(win > bestWin){
+                bestWin = win;
+            }
+
+            result.className =
+                win >= selectedBet * 10
+                ? "result big"
+                : "result win";
+
+            result.textContent =
+                "🎉 +"+format(win)+" JC";
+
+            if(win >= selectedBet * 10){
+                toast("🔥 КРУПНЫЙ ВЫИГРЫШ!");
+            }else{
+                toast("Выигрыш +"+format(win)+" JC");
+            }
+
+        }else{
+
+            result.className = "result";
+            result.textContent = "Не повезло 😈";
+
+        }
+
+        save();
+
+        spinning = false;
+        spinButton.disabled = false;
+
+    },1300);
+
+});
+
+/* =========================
+   DAILY REWARD
+========================= */
+
+const rewardBtn = document.getElementById("rewardBtn");
+
+function rewardAvailable(){
+
+    const last = Number(localStorage.getItem("jc_reward"));
+
+    if(!last) return true;
+
+    return Date.now() - last >= 86400000;
+}
+
+function updateReward(){
+
+    if(rewardAvailable()){
+
+        rewardBtn.disabled = false;
+        rewardBtn.textContent = "ЗАБРАТЬ 500 JC";
+
+    }else{
+
+        rewardBtn.disabled = true;
+        rewardBtn.textContent = "УЖЕ ПОЛУЧЕНО";
+
+    }
+}
+
+rewardBtn.addEventListener("click",()=>{
+
+    if(!rewardAvailable()) return;
+
+    balance += 500;
+
+    localStorage.setItem("jc_reward",Date.now());
+
+    save();
+
+    updateReward();
+
+    toast("+500 JC 🎁");
+
+});
+
+/* =========================
+   DEMO RANK
+========================= */
+
+const demoPlayers = [
+    ["JackMaster","2 450 000"],
+    ["777King","1 820 500"],
+    ["Diamond","1 340 200"],
+    ["LuckyFox","980 400"],
+    ["NeonJack","760 250"],
+    ["PlayerX","540 800"],
+    ["Mogilev","430 100"],
+    ["JackBoy","320 700"],
+    ["Lucky","210 500"],
+    ["Player","120 300"]
+];
+
+function renderRank(){
+
+    const list = document.getElementById("rankList");
+
+    list.innerHTML = "";
+
+    demoPlayers.forEach((player,index)=>{
+
+        const row = document.createElement("div");
+
+        row.className = "rank-card";
+
+        row.innerHTML = `
+            <div class="rank-number">#${index+1}</div>
+            <div class="avatar">♠</div>
+            <div class="rank-info">
+                <strong>${player[0]}</strong>
+                <small>JackRank • Сегодня</small>
+            </div>
+            <div class="rank-coins">${player[1]} JC</div>
+        `;
+
+        list.appendChild(row);
+
+    });
+
+}
+
+renderRank();
+updateUI();
+updateReward();
+
+</script>
+
+</body>
+</html>
