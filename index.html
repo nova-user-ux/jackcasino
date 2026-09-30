@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080b20">
+<title>Jack Studios — Fury of the Sun Demo</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+    background:#070a1d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button{
+    font:inherit;
+    border:0;
+    cursor:pointer;
+}
+
+/* =========================================================
+   LOBBY
+========================================================= */
+
+#lobby{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -20%,#303266 0,#171943 35%,transparent 65%),
+        linear-gradient(180deg,#0a0d27,#07091a);
+    padding-bottom:80px;
+}
+
+.topbar{
+    height:76px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    background:rgba(8,11,31,.92);
+    border-bottom:1px solid rgba(255,255,255,.07);
+    backdrop-filter:blur(18px);
+}
+
+.brand{
+    font-weight:1000;
+    font-size:25px;
+    letter-spacing:-2px;
+}
+
+.brand span{
+    color:#ff2e65;
+}
+
+.balance-box{
+    min-width:115px;
+    text-align:center;
+    padding:9px 13px;
+    border-radius:12px;
+    background:#151938;
+    border:1px solid #353965;
+    font-weight:800;
+    font-size:13px;
+}
+
+.balance-box small{
+    display:block;
+    color:#7e84a5;
+    font-size:8px;
+    letter-spacing:1px;
+    margin-bottom:3px;
+}
+
+.hero{
+    margin:18px 14px;
+    height:235px;
+    border-radius:22px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid #3b3d69;
+    background:
+        radial-gradient(circle at 75% 50%,rgba(255,170,35,.5),transparent 25%),
+        linear-gradient(135deg,#112c35,#13203a 45%,#32130a);
+}
+
+.hero-fire{
+    position:absolute;
+    inset:auto -10% -65px -10%;
+    height:170px;
+    background:
+        radial-gradient(ellipse at 50% 0,#ffdf5d 0,rgba(255,125,17,.8) 25%,transparent 65%);
+    filter:blur(8px);
+}
+
+.hero-sun{
+    position:absolute;
+    right:25px;
+    top:28px;
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#ffe9a1 0,#f7ad25 35%,#a9480b 75%,transparent 76%);
+    box-shadow:0 0 50px rgba(255,161,36,.45);
+}
+
+.hero-temple{
+    position:absolute;
+    right:15px;
+    bottom:25px;
+    width:190px;
+    height:95px;
+    opacity:.65;
+}
+
+.hero-content{
+    position:absolute;
+    z-index:3;
+    left:20px;
+    top:25px;
+}
+
+.hero-content small{
+    color:#f5b83f;
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:9px;
+}
+
+.hero-content h1{
+    margin-top:8px;
+    font-size:35px;
+    line-height:.88;
+    text-shadow:0 4px 15px #000;
+}
+
+.hero-content p{
+    color:#c4c7d9;
+    font-size:11px;
+    max-width:190px;
+    line-height:1.4;
+    margin-top:12px;
+}
+
+.hero-play{
+    margin-top:15px;
+    padding:11px 19px;
+    border-radius:11px;
+    color:#fff;
+    font-weight:900;
+    background:linear-gradient(135deg,#ff315f,#9d27ed);
+    box-shadow:0 7px 22px rgba(255,38,96,.25);
+}
+
+.section-title{
+    padding:0 15px;
+    margin:20px 0 12px;
+    font-size:19px;
+    font-weight:1000;
+}
+
+.filters{
+    display:flex;
+    gap:8px;
+    overflow:auto;
+    padding:0 15px;
+    scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+    display:none;
+}
+
+.filter{
+    flex:0 0 auto;
+    padding:9px 15px;
+    border-radius:30px;
+    color:#9da2c1;
+    background:#151936;
+    border:1px solid #292d52;
+}
+
+.filter.active{
+    color:#fff;
+    background:#ec2e60;
+    border-color:#ff507b;
+}
+
+.games{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    padding:0 14px;
+}
+
+.game-card{
+    position:relative;
+    height:166px;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    background:#17192f;
+    box-shadow:0 8px 20px rgba(0,0,0,.22);
+}
+
+.game-card:active{
+    transform:scale(.98);
+}
+
+.cover{
+    width:100%;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+}
+
+.cover-bg{
+    position:absolute;
+    inset:0;
+}
+
+.cover::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.78));
+}
+
+.cover-title{
+    position:absolute;
+    z-index:4;
+    left:9px;
+    right:9px;
+    bottom:10px;
+    text-align:center;
+    font-weight:1000;
+    font-size:17px;
+    line-height:.9;
+    text-shadow:0 2px 5px #000;
+}
+
+.cover-provider{
+    position:absolute;
+    z-index:4;
+    bottom:3px;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:7px;
+    color:#e5e5e5;
+    letter-spacing:1px;
+}
+
+.cover-character{
+    position:absolute;
+    z-index:2;
+    left:50%;
+    top:40%;
+    transform:translate(-50%,-50%);
+    width:115px;
+    height:105px;
+}
+
+/* cover 1 */
+.cover-anubis{
+    background:
+        radial-gradient(circle at 50% 35%,#a4ff55,transparent 20%),
+        linear-gradient(135deg,#123b28,#0b1820 55%,#26773b);
+}
+
+/* cover 2 */
+.cover-candy{
+    background:
+        radial-gradient(circle at 50% 25%,#fff3bd,transparent 28%),
+        linear-gradient(135deg,#72e6ef,#ff91cf 55%,#e8a36e);
+}
+
+/* cover 3 */
+.cover-olympus{
+    background:
+        linear-gradient(180deg,#bfeeff,#7eaeec 48%,#f5d08c);
+}
+
+/* cover 4 */
+.cover-bonanza{
+    background:
+        radial-gradient(circle at 50% 35%,#fff000,transparent 30%),
+        linear-gradient(135deg,#ef174e,#ffbe00 55%,#5fcf4b);
+}
+
+/* cover 5 */
+.cover-billy{
+    background:
+        linear-gradient(135deg,#09194d,#1d6cb1 45%,#10203d);
+}
+
+/* cover 6 */
+.cover-jazz{
+    background:
+        radial-gradient(circle at 50% 35%,#ffedbd,transparent 18%),
+        linear-gradient(135deg,#a8000b,#ef2020 55%,#68000b);
+}
+
+/* cover 7 */
+.cover-crown{
+    background:
+        radial-gradient(circle,#e70032 0,#70001c 45%,#23000a 100%);
+}
+
+/* cover 8 */
+.cover-ice{
+    background:
+        radial-gradient(circle at 50% 35%,#d7ffff,transparent 25%),
+        linear-gradient(135deg,#0a66bf,#0bd7ef 55%,#2633a7);
+}
+
+/* cover 9 */
+.cover-farm{
+    background:
+        linear-gradient(180deg,#75d04b,#b8e26c 55%,#80512b);
+}
+
+.cover-thunder{
+    background:
+        radial-gradient(circle at 50% 25%,#fff9b0,transparent 18%),
+        linear-gradient(135deg,#d6b16a,#e8e8dc 45%,#8e7c65);
+}
+
+/* vector-like cover art */
+.anubis-head{
+    position:absolute;
+    width:52px;
+    height:70px;
+    left:31px;
+    top:14px;
+    background:linear-gradient(145deg,#ffe16b,#a96709);
+    clip-path:polygon(50% 0,75% 12%,100% 0,87% 45%,73% 80%,50% 100%,27% 80%,13% 45%,0 0,25% 12%);
+    filter:drop-shadow(0 5px 5px #000);
+}
+
+.anubis-head:after{
+    content:"";
+    position:absolute;
+    width:12px;
+    height:7px;
+    background:#0b1720;
+    left:20px;
+    top:38px;
+    box-shadow:20px 0 #0b1720;
+}
+
+.gem{
+    position:absolute;
+    width:55px;
+    height:65px;
+    left:30px;
+    top:15px;
+    clip-path:polygon(50% 0,90% 22%,100% 65%,70% 100%,30% 100%,0 65%,10% 22%);
+    filter:drop-shadow(0 8px 5px rgba(0,0,0,.5));
+}
+
+.gem.red{
+    background:linear-gradient(135deg,#ff8c8c,#e50027 45%,#720014);
+}
+
+.gem.blue{
+    background:linear-gradient(135deg,#d7ffff,#24bff8 40%,#123cc9);
+}
+
+.gem.purple{
+    background:linear-gradient(135deg,#fff,#cf67ff 35%,#6815d8);
+}
+
+.crown{
+    position:absolute;
+    width:85px;
+    height:60px;
+    left:15px;
+    top:20px;
+    background:linear-gradient(#fff07b,#d5960b);
+    clip-path:polygon(0 20%,22% 45%,35% 0,50% 43%,67% 0,80% 45%,100% 20%,87% 100%,13% 100%);
+    filter:drop-shadow(0 6px 5px #000);
+}
+
+.scarab{
+    position:absolute;
+    width:72px;
+    height:65px;
+    left:22px;
+    top:20px;
+    background:radial-gradient(ellipse,#8bff9d,#168e57 50%,#052c23);
+    border-radius:50%;
+    box-shadow:0 0 12px rgba(65,255,145,.45);
+}
+
+.scarab:before,
+.scarab:after{
+    content:"";
+    position:absolute;
+    width:27px;
+    height:53px;
+    top:6px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#d8ffbb,#198c57);
+}
+
+.scarab:before{left:-13px}
+.scarab:after{right:-13px}
+
+.game-card .mini-gem{
+    position:absolute;
+    width:28px;
+    height:34px;
+    top:17px;
+    left:18px;
+    clip-path:polygon(50% 0,100% 25%,85% 100%,15% 100%,0 25%);
+    background:linear-gradient(135deg,#fff,#5cdcff,#0e3ce7);
+    filter:drop-shadow(0 4px 4px #000);
+}
+
+/* bottom navigation */
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:67px;
+    z-index:60;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    background:rgba(28,29,68,.96);
+    border-top:1px solid #484a82;
+    backdrop-filter:blur(15px);
+}
+
+.bottom-nav button{
+    background:none;
+    color:#e7e8f1;
+    font-size:10px;
+}
+
+.bottom-nav button.active{
+    color:#ff2d68;
+}
+
+.nav-icon{
+    display:block;
+    font-size:20px;
+    line-height:25px;
+}
+
+/* =========================================================
+   GAME
+========================================================= */
+
+#game{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:100;
+    overflow:hidden;
+    background:#120b05;
+}
+
+.game-bg{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(ellipse at 50% 85%,#ffb51f 0,rgba(255,105,0,.72) 12%,transparent 40%),
+        radial-gradient(circle at 50% 30%,rgba(30,180,220,.35),transparent 30%),
+        linear-gradient(180deg,#062d43 0%,#123c43 27%,#8e330c 57%,#f35c08 100%);
+}
+
+.game-fire{
+    position:absolute;
+    bottom:-30px;
+    left:-10%;
+    width:120%;
+    height:37%;
+    background:
+        radial-gradient(ellipse at 50% 10%,#fff06c 0,rgba(255,174,30,.85) 18%,rgba(239,67,0,.75) 43%,transparent 70%);
+    filter:blur(5px);
+}
+
+.game-mountains{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:27%;
+    background:
+        linear-gradient(150deg,transparent 35%,#29130d 36% 58%,transparent 59%) 0 0/45% 100%,
+        linear-gradient(210deg,transparent 35%,#35170d 36% 62%,transparent 63%) 100% 0/45% 100%;
+    opacity:.9;
+}
+
+.game-top{
+    position:absolute;
+    z-index:10;
+    top:0;
+    left:0;
+    right:0;
+    height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 12px;
+    background:rgba(3,8,18,.82);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.game-top button{
+    width:42px;
+    height:42px;
+    border-radius:11px;
+    color:#fff;
+    background:#17203b;
+    border:1px solid #34446d;
+    font-size:25px;
+}
+
+.game-logo{
+    text-align:center;
+    font-weight:1000;
+    font-size:15px;
+}
+
+.game-logo small{
+    display:block;
+    color:#d99d2d;
+    font-size:7px;
+    letter-spacing:2px;
+    margin-top:2px;
+}
+
+.game-main{
+    position:absolute;
+    top:62px;
+    bottom:96px;
+    left:0;
+    right:0;
+    overflow:auto;
+    scrollbar-width:none;
+}
+
+.game-main::-webkit-scrollbar{
+    display:none;
+}
+
+.game-title-art{
+    position:relative;
+    z-index:3;
+    text-align:center;
+    padding-top:10px;
+    height:90px;
+}
+
+.game-title-art .fury{
+    color:#ffdf55;
+    font-size:29px;
+    font-weight:1000;
+    line-height:.8;
+    letter-spacing:-2px;
+    text-shadow:
+        0 3px 0 #6f2904,
+        0 5px 8px #000;
+}
+
+.game-title-art .sun{
+    color:#fff1a4;
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:5px;
+    text-shadow:0 2px 3px #000;
+}
+
+.multiplier-bar{
+    width:310px;
+    max-width:90%;
+    height:45px;
+    margin:0 auto 5px;
+    position:relative;
+    z-index:5;
+    display:grid;
+    grid-template-columns:1fr 1.2fr 1fr;
+    align-items:center;
+    border-radius:22px;
+    border:3px solid #9e6514;
+    background:linear-gradient(180deg,#5e3a0c,#241806);
+    box-shadow:0 5px 12px #000;
+}
+
+.multiplier-bar div{
+    text-align:center;
+    color:#d6ad55;
+    font-weight:900;
+    font-size:12px;
+}
+
+.multiplier-bar .current{
+    height:39px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff5a5;
+    font-size:23px;
+    border-radius:20px;
+    background:linear-gradient(#6c9d25,#31510e);
+    border:2px solid #d7c54c;
+    box-shadow:inset 0 0 12px rgba(255,255,255,.18);
+}
+
+/* reels */
+.reel-frame{
+    position:relative;
+    z-index:5;
+    width:min(96vw,610px);
+    margin:0 auto;
+    padding:7px;
+    border-radius:12px;
+    background:
+        linear-gradient(135deg,#f3d26d,#83530b 12%,#e0b33d 35%,#5a3506 70%,#d7aa36);
+    border:2px solid #ffe28b;
+    box-shadow:
+        0 0 0 2px #5a3304,
+        0 8px 20px rgba(0,0,0,.7);
+}
+
+.reels{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-template-rows:repeat(5,1fr);
+    gap:2px;
+    padding:3px;
+    background:#170806;
+}
+
+.cell{
+    aspect-ratio:1/1;
+    min-width:0;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 40%,#35120c,#120706 70%);
+    border:1px solid #66370c;
+}
+
+.cell.win{
+    animation:winPulse .45s ease-in-out infinite alternate;
+}
+
+@keyframes winPulse{
+    from{filter:brightness(1)}
+    to{filter:brightness(1.8);box-shadow:inset 0 0 20px #ffe75a}
+}
+
+/* =========================================================
+   SVG SYMBOLS
+========================================================= */
+
+.symbol{
+    width:82%;
+    height:82%;
+    filter:drop-shadow(0 4px 3px rgba(0,0,0,.8));
+}
+
+.symbol *{
+    vector-effect:non-scaling-stroke;
+}
+
+/* =========================================================
+   GAME CONTROLS
+========================================================= */
+
+.game-controls{
+    position:relative;
+    z-index:10;
+    margin-top:8px;
+    text-align:center;
+}
+
+.game-message{
+    height:24px;
+    color:#ffe17a;
+    font-weight:900;
+    font-size:13px;
+    text-shadow:0 2px 3px #000;
+}
+
+.control-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+}
+
+.round-control{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    color:#fff;
+    background:linear-gradient(#6b370b,#261205);
+    border:2px solid #d99525;
+    font-size:27px;
+    box-shadow:0 4px 10px #000;
+}
+
+.spin{
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle at 35% 25%,#fff6bb 0 7%,#f5c62d 9%,#c8780a 48%,#4b2503 52%,#160b02 100%);
+    border:4px solid #f0bf42;
+    box-shadow:
+        0 0 0 3px #4e2a04,
+        0 6px 15px #000,
+        0 0 30px rgba(255,187,42,.25);
+    color:#fff;
+    font-size:36px;
+    font-weight:1000;
+}
+
+.spin:active,
+.round-control:active{
+    transform:scale(.92);
+}
+
+.spin.spinning{
+    animation:spinButton .5s linear infinite;
+}
+
+@keyframes spinButton{
+    to{transform:rotate(360deg)}
+}
+
+.bottom-game{
+    position:absolute;
+    z-index:20;
+    bottom:0;
+    left:0;
+    right:0;
+    height:96px;
+    background:rgba(22,10,4,.88);
+    border-top:1px solid rgba(255,190,55,.35);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    color:#f0c65a;
+    font-size:10px;
+    text-transform:uppercase;
+}
+
+.stats strong{
+    color:#fff;
+    font-size:14px;
+}
+
+.game-buttons{
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:12px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.game-buttons button{
+    width:48px;
+    height:38px;
+    border-radius:18px;
+    color:#fff;
+    background:rgba(0,0,0,.65);
+    border:1px solid #8d6526;
+    font-size:22px;
+}
+
+.turbo{
+    position:absolute;
+    right:66px;
+    bottom:14px;
+    padding:6px 9px;
+    border-radius:10px;
+    color:#bbb;
+    background:#17120c;
+    border:1px solid #674b20;
+    font-size:9px;
+}
+
+.turbo.active{
+    color:#fff;
+    background:#a66d12;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+#loading{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:#000;
+}
+
+.loading-logo{
+    font-size:28px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+
+.loading-logo span{
+    color:#d99527;
+}
+
+.loading-sub{
+    margin-top:14px;
+    color:#aaa;
+    font-size:9px;
+    letter-spacing:3px;
+}
+
+.loading-line{
+    width:230px;
+    height:5px;
+    margin-top:18px;
+    background:#282828;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.loading-progress{
+    height:100%;
+    width:0;
+    background:#e9a62c;
+    box-shadow:0 0 10px #ffb52d;
+    animation:load 2s linear forwards;
+}
+
+@keyframes load{
+    to{width:100%}
+}
+
+/* =========================================================
+   SYSTEM MENU
+========================================================= */
+
+#menuOverlay{
+    display:none;
+    position:absolute;
+    z-index:80;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    padding:25px 13px 110px;
+    overflow:auto;
+}
+
+.menu-panel{
+    max-width:600px;
+    margin:auto;
+    min-height:600px;
+    border-radius:15px;
+    background:
+        linear-gradient(180deg,rgba(19,13,8,.98),rgba(4,4,4,.98));
+    border:2px solid #8e6222;
+    box-shadow:0 20px 60px #000;
+    padding:18px;
+}
+
+.menu-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#f1b83d;
+    font-size:21px;
+    font-weight:900;
+    padding-bottom:15px;
+    border-bottom:1px solid #54401f;
+}
+
+.menu-close{
+    color:#fff;
+    background:none;
+    font-size:32px;
+}
+
+.menu-item{
+    min-height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    color:#fff;
+}
+
+.menu-item .label{
+    font-size:14px;
+}
+
+.menu-item small{
+    display:block;
+    color:#858585;
+    font-size:9px;
+    margin-top:4px;
+}
+
+.toggle{
+    width:54px;
+    height:29px;
+    border-radius:20px;
+    padding:3px;
+    background:#444;
+}
+
+.toggle span{
+    display:block;
+    width:23px;
+    height:23px;
+    border-radius:50%;
+    background:#ddd;
+    transition:.2s;
+}
+
+.toggle.on{
+    background:#07964e;
+}
+
+.toggle.on span{
+    transform:translateX(25px);
+    background:#fff;
+}
+
+.menu-section{
+    color:#dba43b;
+    font-size:13px;
+    margin:18px 0 8px;
+}
+
+.bet-setting{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    padding:15px 0 5px;
+}
+
+.bet-setting button{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    font-size:30px;
+    color:#fff;
+    background:#ddd;
+    color:#222;
+}
+
+.bet-value{
+    width:150px;
+    height:55px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#242424;
+    border:2px solid #555;
+    font-weight:1000;
+    font-size:20px;
+}
+
+/* =========================================================
+   WIN POPUP
+========================================================= */
+
+#winPopup{
+    position:absolute;
+    z-index:70;
+    left:50%;
+    top:42%;
+    transform:translate(-50%,-50%) scale(.7);
+    opacity:0;
+    pointer-events:none;
+    padding:17px 28px;
+    border-radius:15px;
+    text-align:center;
+    background:linear-gradient(#45290b,#160c02);
+    border:2px solid #e2a530;
+    box-shadow:0 0 40px rgba(255,181,40,.4);
+    transition:.25s;
+}
+
+#winPopup.show{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+}
+
+#winPopup small{
+    display:block;
+    color:#e4c36a;
+    font-size:9px;
+}
+
+#winPopup strong{
+    display:block;
+    color:#fff2a1;
+    font-size:28px;
+    margin-top:4px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(min-width:700px){
+    .games{
+        grid-template-columns:repeat(4,1fr);
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .hero{
+        max-width:1100px;
+        margin:20px auto;
+    }
+
+    .section-title{
+        max-width:1100px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .filters{
+        max-width:1100px;
+        margin:auto;
+    }
+}
+
+@media(max-height:700px){
+    .game-title-art{
+        height:63px;
+        padding-top:5px;
+    }
+
+    .game-title-art .fury{
+        font-size:23px;
+    }
+
+    .multiplier-bar{
+        height:37px;
+    }
+
+    .multiplier-bar .current{
+        height:32px;
+    }
+
+    .reel-frame{
+        max-height:54vh;
+    }
+
+    .game-controls{
+        margin-top:2px;
+    }
+
+    .spin{
+        width:62px;
+        height:62px;
+    }
+
+    .round-control{
+        width:43px;
+        height:43px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOBBY
+===================================================== -->
+
+<div id="lobby">
+
+    <header class="topbar">
+
+        <div class="brand">
+            JACK<span>STUDIOS</span>
+        </div>
+
+        <div class="balance-box">
+            <small>ВИРТУАЛЬНЫЙ БАЛАНС</small>
+            <span id="lobbyBalance">10 000 JC</span>
+        </div>
+
+    </header>
+
+
+    <section class="hero">
+
+        <div class="hero-sun"></div>
+        <div class="hero-fire"></div>
+
+        <svg class="hero-temple" viewBox="0 0 200 100">
+            <polygon points="100,0 185,32 15,32" fill="#d8a52f"/>
+            <rect x="30" y="32" width="140" height="8" fill="#8c5c16"/>
+            <rect x="42" y="40" width="16" height="60" fill="#c28b27"/>
+            <rect x="72" y="40" width="16" height="60" fill="#c28b27"/>
+            <rect x="112" y="40" width="16" height="60" fill="#c28b27"/>
+            <rect x="142" y="40" width="16" height="60" fill="#c28b27"/>
+        </svg>
+
+        <div class="hero-content">
+            <small>JACK STUDIOS ORIGINAL DEMO</small>
+            <h1>FURY<br>OF THE SUN</h1>
+            <p>Оригинальная мобильная demo-игра с виртуальным балансом JC.</p>
+
+            <button class="hero-play" onclick="openGame()">
+                ИГРАТЬ
+            </button>
+        </div>
+
+    </section>
+
+
+    <div class="section-title">
+        Игры
+    </div>
+
+    <div class="filters">
+        <button class="filter active">Все провайдеры</button>
+        <button class="filter">Slots</button>
+        <button class="filter">Новинки</button>
+        <button class="filter">Популярные</button>
+        <button class="filter">Избранное</button>
+    </div>
+
+
+    <div class="games">
+
+        <!-- 1 -->
+        <div class="game-card" onclick="openGame()">
+            <div class="cover cover-anubis">
+                <div class="cover-character">
+                    <div class="anubis-head"></div>
+                </div>
+                <div class="mini-gem"></div>
+                <div class="cover-title">FURY<br>OF THE SUN</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="game-card">
+            <div class="cover cover-candy">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <path d="M25 58 Q60 35 95 58 L86 90 Q60 105 34 90Z" fill="#ff75ba" stroke="#fff1fc" stroke-width="5"/>
+                        <path d="M33 52 Q60 20 87 52" fill="none" stroke="#fff" stroke-width="15"/>
+                        <circle cx="50" cy="30" r="8" fill="#e73550"/>
+                        <circle cx="72" cy="24" r="8" fill="#e73550"/>
+                    </svg>
+                </div>
+                <div class="cover-title">CANDY<br>PALACE</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="game-card">
+            <div class="cover cover-olympus">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <circle cx="60" cy="35" r="22" fill="#fff2d1"/>
+                        <path d="M25 95 Q60 42 95 95" fill="#fff" stroke="#9b9b9b" stroke-width="3"/>
+                        <path d="M35 35 Q60 8 85 35" fill="#fff" stroke="#aaa" stroke-width="3"/>
+                        <path d="M20 70 L100 70" stroke="#ffd24d" stroke-width="8"/>
+                        <path d="M60 15 L60 65" stroke="#83cfff" stroke-width="5"/>
+                    </svg>
+                </div>
+                <div class="cover-title">GATES OF<br>OLYMPUS</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="game-card">
+            <div class="cover cover-bonanza">
+                <div class="cover-character">
+                    <div class="gem red"></div>
+                    <div class="gem blue" style="left:7px;top:35px;width:35px;height:40px"></div>
+                    <div class="gem purple" style="left:67px;top:35px;width:35px;height:40px"></div>
+                </div>
+                <div class="cover-title">BONANZA<br>BILLION</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="game-card">
+            <div class="cover cover-billy">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <circle cx="60" cy="58" r="32" fill="#c77b32" stroke="#24140b" stroke-width="6"/>
+                        <ellipse cx="48" cy="55" rx="5" ry="7" fill="#111"/>
+                        <ellipse cx="72" cy="55" rx="5" ry="7" fill="#111"/>
+                        <path d="M38 76 Q60 91 82 76" fill="none" stroke="#111" stroke-width="5"/>
+                        <path d="M25 34 Q60 5 95 34" fill="#eee"/>
+                        <path d="M18 38 Q60 27 102 38" fill="#111"/>
+                    </svg>
+                </div>
+                <div class="cover-title">BILLY<br>NOAIRE</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="game-card">
+            <div class="cover cover-jazz">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <circle cx="60" cy="37" r="24" fill="#ffe0b0"/>
+                        <path d="M30 38 Q60 0 90 38" fill="#eee"/>
+                        <path d="M33 70 Q60 47 87 70 L95 105 L25 105Z" fill="#e51c2c"/>
+                        <circle cx="93" cy="75" r="16" fill="#ddd" stroke="#777" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="cover-title">IN<br>JAZZ</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="game-card">
+            <div class="cover cover-crown">
+                <div class="cover-character">
+                    <div class="crown"></div>
+                </div>
+                <div class="cover-title">SHINING<br>CROWN</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="game-card">
+            <div class="cover cover-ice">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <circle cx="60" cy="35" r="23" fill="#f6d2bc"/>
+                        <path d="M35 36 Q60 0 86 35 L79 16 L92 25 L83 8" fill="#bffaff"/>
+                        <path d="M30 108 Q60 48 90 108" fill="#9deeff"/>
+                        <path d="M43 62 L60 92 L77 62" fill="#fff"/>
+                    </svg>
+                </div>
+                <div class="cover-title">DIVINE<br>QUEEN</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="game-card">
+            <div class="cover cover-farm">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <ellipse cx="60" cy="63" rx="37" ry="42" fill="#fff"/>
+                        <circle cx="60" cy="38" r="25" fill="#fff"/>
+                        <path d="M43 36 Q60 20 77 36" fill="#ffb5c4"/>
+                        <circle cx="51" cy="42" r="4" fill="#222"/>
+                        <circle cx="69" cy="42" r="4" fill="#222"/>
+                        <path d="M53 52 Q60 58 67 52" fill="#ef9b19"/>
+                    </svg>
+                </div>
+                <div class="cover-title">MONEY<br>FARM</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+        <!-- 10 -->
+        <div class="game-card">
+            <div class="cover cover-thunder">
+                <div class="cover-character">
+                    <svg viewBox="0 0 120 110" width="100%" height="100%">
+                        <circle cx="60" cy="38" r="24" fill="#fff0cf"/>
+                        <path d="M32 38 Q60 3 88 38" fill="#fff"/>
+                        <path d="M25 102 Q60 52 95 102" fill="#eee"/>
+                        <path d="M15 65 L105 65" stroke="#ffd04c" stroke-width="6"/>
+                        <path d="M60 15 L60 88" stroke="#7c92a9" stroke-width="5"/>
+                    </svg>
+                </div>
+                <div class="cover-title">ZEUS<br>THUNDERER</div>
+                <div class="cover-provider">JACK STUDIOS</div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <nav class="bottom-nav">
+
+        <button class="active">
+            <span class="nav-icon">777</span>
+            Слоты
+        </button>
+
+        <button>
+            <span class="nav-icon">♠</span>
+            Лайв Казино
+        </button>
+
+        <button>
+            <span class="nav-icon">▤</span>
+            Купон
+        </button>
+
+        <button>
+            <span class="nav-icon">◉</span>
+            Лайв
+        </button>
+
+        <button>
+            <span class="nav-icon">◈</span>
+            Спорт
+        </button>
+
+    </nav>
+
+</div>
+
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<div id="game">
+
+    <div class="game-bg"></div>
+    <div class="game-fire"></div>
+    <div class="game-mountains"></div>
+
+
+    <!-- loading -->
+
+    <div id="loading">
+
+        <div class="loading-logo">
+            JACK <span>STUDIOS</span>
+        </div>
+
+        <div class="loading-sub">
+            ORIGINAL DEMO
+        </div>
+
+        <div class="loading-line">
+            <div class="loading-progress"></div>
+        </div>
+
+    </div>
+
+
+    <!-- top -->
+
+    <header class="game-top">
+
+        <button onclick="closeGame()">
+            ‹
+        </button>
+
+        <div class="game-logo">
+            FURY OF THE SUN
+            <small>JACK STUDIOS ORIGINAL</small>
+        </div>
+
+        <button onclick="openMenu()">
+            ☰
+        </button>
+
+    </header>
+
+
+    <!-- main -->
+
+    <main class="game-main">
+
+        <div class="game-title-art">
+
+            <div class="fury">
+                FURY OF
+            </div>
+
+            <div class="fury">
+                THE SUN
+            </div>
+
+            <div class="sun">
+                JACK STUDIOS
+            </div>
+
+        </div>
+
+
+        <div class="multiplier-bar">
+
+            <div>
+                x1024
+            </div>
+
+            <div class="current" id="multiplier">
+                x1
+            </div>
+
+            <div>
+                x2
+            </div>
+
+        </div>
+
+
+        <div class="reel-frame">
+
+            <div class="reels" id="reels"></div>
+
+        </div>
+
+
+        <div class="game-controls">
+
+            <div class="game-message" id="message">
+                СДЕЛАЙТЕ ВАШУ СТАВКУ
+            </div>
+
+            <div class="control-row">
+
+                <button class="round-control" onclick="changeBet(-1)">
+                    −
+                </button>
+
+                <button class="spin" id="spinButton" onclick="spin()">
+                    ↻
+                </button>
+
+                <button class="round-control" onclick="changeBet(1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- bottom -->
+
+    <div class="bottom-game">
+
+        <div class="stats">
+
+            <span>
+                КРЕДИТ
+                <strong id="gameBalance">10 000 JC</strong>
+            </span>
+
+            <span>
+                СТАВКА
+                <strong id="betValue">20 JC</strong>
+            </span>
+
+        </div>
+
+        <button class="turbo" id="turboButton" onclick="toggleTurbo()">
+            TURBO
+        </button>
+
+        <div class="game-buttons">
+
+            <button onclick="showInfo()">
+                i
+            </button>
+
+            <button onclick="openMenu()">
+                ☰
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- menu -->
+
+    <div id="menuOverlay">
+
+        <div class="menu-panel">
+
+            <div class="menu-head">
+
+                НАСТРОЙКИ СИСТЕМЫ
+
+                <button class="menu-close" onclick="closeMenu()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <div class="label">
+                    ДОМОЙ
+                    <small>Вернуться в лобби</small>
+                </div>
+
+                <button
+                    onclick="closeMenu();closeGame();"
+                    style="background:none;color:white;font-size:26px"
+                >
+                    ⌂
+                </button>
+
+            </div>
+
+
+            <div class="menu-section">
+                ОСНОВНЫЕ НАСТРОЙКИ
+            </div>
+
+
+            <div class="menu-item">
+
+                <div class="label">
+                    ЭКОНОМИЯ БАТАРЕИ
+                    <small>Уменьшает анимации игры</small>
+                </div>
+
+                <button
+                    class="toggle"
+                    id="batteryToggle"
+                    onclick="toggleSetting(this)"
+                >
+                    <span></span>
+                </button>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <div class="label">
+                    ФОНОВАЯ МУЗЫКА
+                    <small>В демо используется без звука</small>
+                </div>
+
+                <button
+                    class="toggle on"
+                    onclick="toggleSetting(this)"
+                >
+                    <span></span>
+                </button>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <div class="label">
+                    TURBO
+                    <small>Ускоряет анимацию вращения</small>
+                </div>
+
+                <button
+                    class="toggle"
+                    id="turboToggle"
+                    onclick="toggleTurboMenu(this)"
+                >
+                    <span></span>
+                </button>
+
+            </div>
+
+
+            <div class="menu-section">
+                НАСТРОЙКИ СТАВКИ
+            </div>
+
+
+            <div class="bet-setting">
+
+                <button onclick="changeBet(-1)">
+                    −
+                </button>
+
+                <div class="bet-value" id="menuBet">
+                    20 JC
+                </div>
+
+                <button onclick="changeBet(1)">
+                    +
+                </button>
+
+            </div>
+
+
+            <div
+                style="
+                    text-align:center;
+                    color:#777;
+                    font-size:9px;
+                    margin-top:25px;
+                "
+            >
+                ВИРТУАЛЬНАЯ DEMO-ВЕРСИЯ
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="winPopup">
+        <small>ВЫИГРЫШ</small>
+        <strong id="winAmount">+0 JC</strong>
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let balance = Number(
+    localStorage.getItem("jack_balance") || 10000
+);
+
+let bet = Number(
+    localStorage.getItem("jack_bet") || 20
+);
+
+let multiplier = 1;
+let turbo = false;
+let spinning = false;
+
+const symbols = [
+    "red",
+    "blue",
+    "purple",
+    "green",
+    "gold",
+    "scarab",
+    "crown",
+    "sun"
+];
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const lobby = document.getElementById("lobby");
+const game = document.getElementById("game");
+const reels = document.getElementById("reels");
+const loading = document.getElementById("loading");
+
+const lobbyBalance =
+    document.getElementById("lobbyBalance");
+
+const gameBalance =
+    document.getElementById("gameBalance");
+
+const betValue =
+    document.getElementById("betValue");
+
+const menuBet =
+    document.getElementById("menuBet");
+
+const multiplierText =
+    document.getElementById("multiplier");
+
+const message =
+    document.getElementById("message");
+
+const spinButton =
+    document.getElementById("spinButton");
+
+
+/* =========================================================
+   SYMBOL SVG
+========================================================= */
+
+function symbolSVG(type){
+
+    if(type === "red"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="r1" x1="0" y1="0" x2="1" y2="1">
+                    <stop stop-color="#ffb0b0"/>
+                    <stop offset=".35" stop-color="#ff263e"/>
+                    <stop offset="1" stop-color="#72000f"/>
+                </linearGradient>
+            </defs>
+            <polygon points="50,5 82,20 95,50 82,80 50,95 18,80 5,50 18,20"
+                fill="url(#r1)" stroke="#ffd04a" stroke-width="3"/>
+            <polygon points="50,18 73,29 82,50 73,71 50,82 27,71 18,50 27,29"
+                fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>
+            <path d="M25 30 L50 18 L38 48Z" fill="#fff" opacity=".28"/>
+        </svg>`;
+    }
+
+    if(type === "blue"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1">
+                    <stop stop-color="#dfffff"/>
+                    <stop offset=".35" stop-color="#28c9ff"/>
+                    <stop offset="1" stop-color="#1035ce"/>
+                </linearGradient>
+            </defs>
+            <polygon points="50,4 86,28 76,78 50,95 24,78 14,28"
+                fill="url(#b1)" stroke="#ffdd5d" stroke-width="3"/>
+            <path d="M50 4 L50 95 M14 28 L76 78 M86 28 L24 78"
+                stroke="#fff" stroke-opacity=".28" stroke-width="3"/>
+            <path d="M25 28 L50 12 L41 45Z" fill="#fff" opacity=".35"/>
+        </svg>`;
+    }
+
+    if(type === "purple"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="p1" x1="0" y1="0" x2="1" y2="1">
+                    <stop stop-color="#fff"/>
+                    <stop offset=".25" stop-color="#ee8cff"/>
+                    <stop offset=".7" stop-color="#8b25e9"/>
+                    <stop offset="1" stop-color="#3c087c"/>
+                </linearGradient>
+            </defs>
+            <polygon points="50,4 89,28 78,79 50,96 22,79 11,28"
+                fill="url(#p1)" stroke="#f5cf55" stroke-width="3"/>
+            <polygon points="50,17 76,32 69,66 50,80 31,66 24,32"
+                fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>
+            <path d="M24 30 L50 12 L42 43Z" fill="#fff" opacity=".35"/>
+        </svg>`;
+    }
+
+    if(type === "green"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42"
+                fill="#063d2c" stroke="#d8a62d" stroke-width="5"/>
+            <circle cx="50" cy="50" r="32"
+                fill="url(#g1)" stroke="#6bffaf" stroke-width="2"/>
+            <defs>
+                <radialGradient id="g1">
+                    <stop stop-color="#7dffbd"/>
+                    <stop offset=".5" stop-color="#0e9c59"/>
+                    <stop offset="1" stop-color="#05351f"/>
+                </radialGradient>
+            </defs>
+            <path d="M25 44 Q50 18 75 44 Q67 72 50 80 Q33 72 25 44Z"
+                fill="#137d4d" stroke="#b5ffbd" stroke-width="2"/>
+            <circle cx="41" cy="47" r="4" fill="#dfffac"/>
+            <circle cx="59" cy="47" r="4" fill="#dfffac"/>
+        </svg>`;
+    }
+
+    if(type === "gold"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="43"
+                fill="#07553d" stroke="#e4b83f" stroke-width="5"/>
+            <path d="M28 63 L38 35 L50 50 L62 30 L73 63 Q50 82 28 63Z"
+                fill="#e0a52a" stroke="#ffe889" stroke-width="3"/>
+            <circle cx="50" cy="49" r="8" fill="#ef2e4e" stroke="#fff0a0" stroke-width="2"/>
+        </svg>`;
+    }
+
+    if(type === "scarab"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="s1">
+                    <stop stop-color="#dbff9c"/>
+                    <stop offset=".45" stop-color="#2bc87b"/>
+                    <stop offset="1" stop-color="#063c31"/>
+                </linearGradient>
+            </defs>
+            <ellipse cx="50" cy="51" rx="22" ry="32"
+                fill="url(#s1)" stroke="#e4bb42" stroke-width="3"/>
+            <ellipse cx="24" cy="52" rx="18" ry="27"
+                fill="#11784e" stroke="#d8a73a" stroke-width="3"/>
+            <ellipse cx="76" cy="52" rx="18" ry="27"
+                fill="#11784e" stroke="#d8a73a" stroke-width="3"/>
+            <path d="M50 20 L50 82" stroke="#efffbd" stroke-width="3"/>
+            <path d="M32 35 L18 20 M68 35 L82 20"
+                stroke="#d8a73a" stroke-width="3"/>
+        </svg>`;
+    }
+
+    if(type === "crown"){
+        return `
+        <svg class="symbol" viewBox="0 0 100 100">
+            <defs>
+                <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1">
+                    <stop stop-color="#fff18b"/>
+                    <stop offset=".4" stop-color="#e8ad27"/>
+                    <stop offset="1" stop-color="#8b4805"/>
+                </linearGradient>
+            </defs>
+            <path d="M10 27 L28 45 L40 12 L50 43 L63 12 L73 45 L91 27 L83 78 L17 78Z"
+                fill="url(#c1)" stroke="#ffe985" stroke-width="3"/>
+            <rect x="17" y="73" width="66" height="15" rx="5"
+                fill="#b56d09" stroke="#ffe985" stroke-width="3"/>
+            <circle cx="40" cy="62" r="6" fill="#e93649"/>
+            <circle cx="60" cy="62" r="6" fill="#35d7ff"/>
+        </svg>`;
+    }
+
+    return `
+    <svg class="symbol" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40"
+            fill="url(#sun)" stroke="#ffd85c" stroke-width="4"/>
+        <defs>
+            <radialGradient id="sun">
+                <stop stop-color="#fffbd1"/>
+                <stop offset=".35" stop-color="#ffd83d"/>
+                <stop offset="1" stop-color="#d66d05"/>
+            </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="16" fill="#fff1a2"/>
+        <path d="M50 7V25 M50 75V93 M7 50H25 M75 50H93
+                 M20 20L33 33 M67 67L80 80 M80 20L67 33 M33 67L20 80"
+            stroke="#ffe76b" stroke-width="6" stroke-linecap="round"/>
+    </svg>`;
+}
+
+
+/* =========================================================
+   CREATE REELS
+========================================================= */
+
+function randomSymbol(){
+
+    return symbols[
+        Math.floor(Math.random()*symbols.length)
+    ];
+
+}
+
+function createReels(){
+
+    reels.innerHTML="";
+
+    for(let i=0;i<30;i++){
+
+        const cell=document.createElement("div");
+
+        cell.className="cell";
+
+        const type=randomSymbol();
+
+        cell.dataset.symbol=type;
+
+        cell.innerHTML=symbolSVG(type);
+
+        reels.appendChild(cell);
+    }
+}
+
+
+/* =========================================================
+   BALANCE
+========================================================= */
+
+function formatNumber(n){
+
+    return Math.floor(n)
+        .toLocaleString("ru-RU")
+        .replace(/\u00a0/g," ");
+
+}
+
+function updateUI(){
+
+    const formatted=formatNumber(balance)+" JC";
+
+    lobbyBalance.textContent=formatted;
+    gameBalance.textContent=formatted;
+
+    betValue.textContent=formatNumber(bet)+" JC";
+    menuBet.textContent=formatNumber(bet)+" JC";
+
+    localStorage.setItem(
+        "jack_balance",
+        balance
+    );
+
+    localStorage.setItem(
+        "jack_bet",
+        bet
+    );
+}
+
+
+/* =========================================================
+   OPEN GAME
+========================================================= */
+
+function openGame(){
+
+    lobby.style.display="none";
+    game.style.display="block";
+
+    document.body.style.overflow="hidden";
+
+    updateUI();
+    createReels();
+
+    loading.style.display="flex";
+
+    setTimeout(function(){
+
+        loading.style.display="none";
+
+    },2000);
+}
+
+
+/* =========================================================
+   CLOSE GAME
+========================================================= */
+
+function closeGame(){
+
+    game.style.display="none";
+    lobby.style.display="block";
+
+    document.body.style.overflow="";
+
+    updateUI();
+}
+
+
+/* =========================================================
+   BET
+========================================================= */
+
+const bets=[
+    5,
+    10,
+    20,
+    40,
+    80,
+    100,
+    200
+];
+
+function changeBet(direction){
+
+    let index=bets.indexOf(bet);
+
+    if(index<0) index=2;
+
+    index+=direction;
+
+    if(index<0) index=0;
+    if(index>=bets.length) index=bets.length-1;
+
+    bet=bets[index];
+
+    updateUI();
+}
+
+
+/* =========================================================
+   SPIN
+========================================================= */
+
+async function spin(){
+
+    if(spinning) return;
+
+    if(balance<bet){
+
+        message.textContent="НЕДОСТАТОЧНО JC";
+
+        return;
+    }
+
+    spinning=true;
+
+    spinButton.classList.add("spinning");
+
+    message.textContent="ВРАЩЕНИЕ...";
+
+    balance-=bet;
+
+    updateUI();
+
+
+    const cells=[
+        ...document.querySelectorAll(".cell")
+    ];
+
+
+    /* visual shuffle */
+
+    const duration=turbo ? 450 : 950;
+
+    let start=Date.now();
+
+    const timer=setInterval(function(){
+
+        cells.forEach(function(cell){
+
+            const type=randomSymbol();
+
+            cell.dataset.symbol=type;
+            cell.innerHTML=symbolSVG(type);
+            cell.classList.remove("win");
+
+        });
+
+        if(Date.now()-start>duration){
+
+            clearInterval(timer);
+
+            finishSpin();
+
+        }
+
+    },turbo ? 70 : 100);
+
+
+}
+
+
+/* =========================================================
+   FINISH SPIN
+========================================================= */
+
+function finishSpin(){
+
+    const cells=[
+        ...document.querySelectorAll(".cell")
+    ];
+
+    const counts={};
+
+    cells.forEach(function(cell){
+
+        const s=cell.dataset.symbol;
+
+        counts[s]=(counts[s]||0)+1;
+
+    });
+
+
+    let winningType=null;
+    let winningCount=0;
+
+    Object.keys(counts).forEach(function(type){
+
+        if(counts[type]>=8 && counts[type]>winningCount){
+
+            winningType=type;
+            winningCount=counts[type];
+
+        }
+
+    });
+
+
+    if(winningType){
+
+        const winningCells=
+            cells.filter(
+                cell=>cell.dataset.symbol===winningType
+            );
+
+        winningCells.forEach(
+            cell=>cell.classList.add("win")
+        );
+
+
+        const win =
+            bet *
+            Math.max(1,Math.floor(winningCount/2)) *
+            multiplier;
+
+        balance+=win;
+
+        updateUI();
+
+        message.textContent=
+            "ВЫИГРЫШ "+formatNumber(win)+" JC";
+
+        showWin(win);
+
+
+        multiplier=Math.min(
+            multiplier*2,
+            64
+        );
+
+        multiplierText.textContent=
+            "x"+multiplier;
+
+
+        setTimeout(function(){
+
+            cascade(winningType);
+
+        },turbo ? 180 : 500);
+
+
+    }else{
+
+        multiplier=1;
+
+        multiplierText.textContent="x1";
+
+        message.textContent="НЕТ ВЫИГРЫША";
+
+        finishSpinState();
+
+    }
+
+}
+
+
+/* =========================================================
+   CASCADE
+========================================================= */
+
+function cascade(type){
+
+    const cells=[
+        ...document.querySelectorAll(".cell")
+    ];
+
+    cells.forEach(function(cell){
+
+        if(cell.dataset.symbol===type){
+
+            cell.style.opacity="0";
+            cell.style.transform="scale(.3)";
+
+        }
+
+    });
+
+
+    setTimeout(function(){
+
+        cells.forEach(function(cell){
+
+            if(cell.dataset.symbol===type){
+
+                const newType=randomSymbol();
+
+                cell.dataset.symbol=newType;
+
+                cell.innerHTML=
+                    symbolSVG(newType);
+
+                cell.classList.remove("win");
+
+                cell.style.opacity="1";
+                cell.style.transform="scale(1)";
+            }
+
+        });
+
+
+        setTimeout(function(){
+
+            finishCascade();
+
+        },turbo ? 100 : 300);
+
+    },turbo ? 120 : 350);
+
+}
+
+
+/* =========================================================
+   CASCADE CHECK
+========================================================= */
+
+function finishCascade(){
+
+    const cells=[
+        ...document.querySelectorAll(".cell")
+    ];
+
+    const counts={};
+
+    cells.forEach(function(cell){
+
+        const s=cell.dataset.symbol;
+
+        counts[s]=(counts[s]||0)+1;
+
+    });
+
+
+    let next=null;
+    let amount=0;
+
+    Object.keys(counts).forEach(function(s){
+
+        if(counts[s]>=8 && counts[s]>amount){
+
+            next=s;
+            amount=counts[s];
+
+        }
+
+    });
+
+
+    if(next){
+
+        const win=
+            bet*
+            Math.max(1,Math.floor(amount/2))*
+            multiplier;
+
+        balance+=win;
+
+        updateUI();
+
+        showWin(win);
+
+        cells.forEach(function(cell){
+
+            if(cell.dataset.symbol===next){
+
+                cell.classList.add("win");
+
+            }
+
+        });
+
+        setTimeout(function(){
+
+            cascade(next);
+
+        },turbo ? 180 : 500);
+
+    }else{
+
+        finishSpinState();
+
+    }
+
+}
+
+
+/* =========================================================
+   END SPIN
+========================================================= */
+
+function finishSpinState(){
+
+    spinning=false;
+
+    spinButton.classList.remove("spinning");
+
+    setTimeout(function(){
+
+        multiplier=1;
+
+        multiplierText.textContent="x1";
+
+        if(message.textContent!=="НЕТ ВЫИГРЫША"){
+
+            message.textContent="СДЕЛАЙТЕ ВАШУ СТАВКУ";
+
+        }
+
+    },700);
+
+}
+
+
+/* =========================================================
+   WIN POPUP
+========================================================= */
+
+function showWin(amount){
+
+    const popup=
+        document.getElementById("winPopup");
+
+    document.getElementById(
+        "winAmount"
+    ).textContent=
+        "+"+formatNumber(amount)+" JC";
+
+    popup.classList.add("show");
+
+    setTimeout(function(){
+
+        popup.classList.remove("show");
+
+    },turbo ? 500 : 1100);
+
+}
+
+
+/* =========================================================
+   TURBO
+========================================================= */
+
+function toggleTurbo(){
+
+    turbo=!turbo;
+
+    document
+        .getElementById("turboButton")
+        .classList.toggle("active",turbo);
+
+    const toggle=
+        document.getElementById("turboToggle");
+
+    toggle.classList.toggle("on",turbo);
+
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+function openMenu(){
+
+    document.getElementById(
+        "menuOverlay"
+    ).style.display="block";
+
+}
+
+function closeMenu(){
+
+    document.getElementById(
+        "menuOverlay"
+    ).style.display="none";
+
+}
+
+function toggleSetting(button){
+
+    button.classList.toggle("on");
+
+}
+
+function toggleTurboMenu(button){
+
+    turbo=!turbo;
+
+    button.classList.toggle("on",turbo);
+
+    document
+        .getElementById("turboButton")
+        .classList.toggle("active",turbo);
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+function showInfo(){
+
+    alert(
+        "FURY OF THE SUN\n\n"+
+        "Демо-версия JACK STUDIOS.\n\n"+
+        "Поле: 6 × 5\n"+
+        "Выигрыш: от 8 одинаковых символов\n"+
+        "Каскады: включены\n"+
+        "Множитель: до x64\n\n"+
+        "Баланс используется только как виртуальные JC."
+    );
+
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+document.querySelectorAll(".filter")
+.forEach(function(button){
+
+    button.addEventListener("click",function(){
+
+        document
+            .querySelectorAll(".filter")
+            .forEach(function(x){
+
+                x.classList.remove("active");
+
+            });
+
+        button.classList.add("active");
+
+    });
+
+});
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateUI();
+
+</script>
+
+</body>
+</html>
