@@ -1324,16 +1324,13 @@ async function spin(){
 
   await wait(turbo?150:400);
 
-  const winAmount=
-   Math.max(
-    bets[betIndex],
+  const winAmount =
     Math.floor(
-      bets[betIndex] *
-      winners.length *
-      (multiplier/2) *
-      (0.65+Math.random()*1.1)
-    )
-   );
+        bets[betIndex] *
+        winners.length *
+        multiplier *
+        (2.5 + Math.random() * 4)
+    );
 
   totalWin+=winAmount;
 
