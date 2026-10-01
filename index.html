@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nomerok</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, #25252d 0%, #111114 42%, #09090b 100%);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                   "Segoe UI", Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 18px 16px 35px;
+    }
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #8b5cf6;
+    }
+
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #19191f;
+      border: 1px solid #292930;
+      padding: 9px 13px;
+      border-radius: 13px;
+      font-weight: 800;
+    }
+
+    .balance-icon {
+      font-size: 15px;
+    }
+
+    /* PROFILE */
+
+    .profile {
+      background: linear-gradient(135deg, #19191f, #131317);
+      border: 1px solid #292930;
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #8b5cf6, #5b21b6);
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .profile-name {
+      font-weight: 800;
+    }
+
+    .profile-level {
+      color: #888894;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    /* GAME */
+
+    .game-title {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .game-title h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    .game-title p {
+      color: #858590;
+      margin: 7px 0 25px;
+      font-size: 14px;
+    }
+
+    /* MACHINE */
+
+    .machine {
+      position: relative;
+      padding: 20px 15px 25px;
+      border-radius: 25px;
+      background:
+        linear-gradient(145deg, #202026, #111115);
+      border: 1px solid #303038;
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .machine-label {
+      text-align: center;
+      color: #777780;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 17px;
+    }
+
+    /* LICENSE PLATE */
+
+    .plate-wrapper {
+      padding: 9px;
+      border-radius: 15px;
+      background: #080809;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.7);
+    }
+
+    .plate {
+      position: relative;
+      min-height: 105px;
+      border-radius: 9px;
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff 0%,
+          #f3f3f3 45%,
+          #d7d7d7 100%
+        );
+      border: 3px solid #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      box-shadow:
+        inset 0 2px 0 #fff,
+        inset 0 -3px 5px rgba(0,0,0,.2);
+      overflow: hidden;
+    }
+
+    .plate-number {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: clamp(31px, 9vw, 52px);
+      letter-spacing: 2px;
+      transition: transform .1s;
+      white-space: nowrap;
+    }
+
+    .plate-region {
+      position: absolute;
+      right: 7px;
+      top: 0;
+      height: 100%;
+      width: 47px;
+      border-left: 2px solid #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .plate-flag {
+      font-size: 8px;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    /* RESULT */
+
+    .result {
+      text-align: center;
+      margin-top: 16px;
+      min-height: 45px;
+    }
+
+    .rarity {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .rarity.common {
+      color: #a8a8b0;
+    }
+
+    .rarity.rare {
+      color: #60a5fa;
+    }
+
+    .rarity.epic {
+      color: #c084fc;
+    }
+
+    .rarity.legendary {
+      color: #fbbf24;
+    }
+
+    .rarity.ultra {
+      color: #fb7185;
+    }
+
+    .price {
+      margin-top: 4px;
+      color: #858590;
+      font-size: 13px;
+    }
+
+    /* SPIN */
+
+    .spin-button {
+      width: 100%;
+      border: 0;
+      border-radius: 17px;
+      min-height: 58px;
+      margin-top: 18px;
+      color: white;
+      font-weight: 900;
+      font-size: 17px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      box-shadow:
+        0 8px 25px rgba(124,58,237,.25);
+      transition: transform .1s, filter .2s;
+    }
+
+    .spin-button:active {
+      transform: scale(.97);
+    }
+
+    .spin-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      background: #151519;
+      border: 1px solid #27272e;
+      border-radius: 14px;
+      padding: 12px 7px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .stat-label {
+      color: #777780;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    /* NAV */
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .nav-button {
+      border: 1px solid #28282f;
+      background: #151519;
+      color: #9999a4;
+      min-height: 48px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-button.active {
+      color: #fff;
+      border-color: #6d28d9;
+      background: #211837;
+    }
+
+    /* HISTORY */
+
+    .history {
+      margin-top: 22px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #151519;
+      border: 1px solid #27272e;
+      border-radius: 12px;
+      padding: 11px 13px;
+    }
+
+    .history-number {
+      font-family: monospace;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .history-rarity {
+      color: #888894;
+      font-size: 12px;
+    }
+
+    /* ANIMATION */
+
+    .spinning {
+      animation: plateShake .08s infinite alternate;
+    }
+
+    @keyframes plateShake {
+      from {
+        transform: translateY(-2px);
+      }
+
+      to {
+        transform: translateY(2px);
+      }
+    }
+
+    .win {
+      animation: win .5s ease;
+    }
+
+    @keyframes win {
+      0% {
+        transform: scale(.94);
+      }
+
+      55% {
+        transform: scale(1.04);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .app {
+        padding-left: 11px;
+        padding-right: 11px;
+      }
+
+      .plate-number {
+        font-size: 28px;
+      }
+
+      .plate-region {
+        width: 39px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="logo">
+      Nomer<span>ok</span>
+    </div>
+
+    <div class="balance">
+      <span class="balance-icon">💰</span>
+      <span id="balance">5 000</span>
+    </div>
+  </header>
+
+  <div class="profile">
+
+    <div class="avatar" id="avatar">
+      N
+    </div>
+
+    <div>
+      <div class="profile-name" id="username">
+        Новый игрок
+      </div>
+
+      <div class="profile-level">
+        Уровень <span id="level">1</span>
+        •
+        <span id="xp">0</span> XP
+      </div>
+    </div>
+
+  </div>
+
+  <div class="game-title">
+    <h1>Крути номер</h1>
+    <p>Попробуй выбить редкую комбинацию</p>
+  </div>
+
+  <section class="machine">
+
+    <div class="machine-label">
+      НОМЕРНОЙ ЗНАК • RU
+    </div>
+
+    <div class="plate-wrapper">
+
+      <div class="plate">
+
+        <div class="plate-number" id="plateNumber">
+          А777АА
+        </div>
+
+        <div class="plate-region">
+          <div class="plate-flag">RUS</div>
+          <div id="region">77</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="result">
+
+      <div
+        class="rarity common"
+        id="rarity"
+      >
+        ⚪ Обычный
+      </div>
+
+      <div class="price">
+        Стоимость:
+        <span id="price">50</span> ₽
+      </div>
+
+    </div>
+
+    <button
+      class="spin-button"
+      id="spinButton"
+    >
+      🎰 КРУТИТЬ • 100 ₽
+    </button>
+
+  </section>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-value" id="totalSpins">
+        0
+      </div>
+
+      <div class="stat-label">
+        Круток
+      </div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-value" id="collection">
+        0
+      </div>
+
+      <div class="stat-label">
+        Номеров
+      </div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-value" id="collectionValue">
+        0 ₽
+      </div>
+
+      <div class="stat-label">
+        Коллекция
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+
+    <button class="nav-button active">
+      🎰 Крутить
+    </button>
+
+    <button class="nav-button" id="collectionButton">
+      🗃 Коллекция
+    </button>
+
+    <button class="nav-button" id="profileButton">
+      👤 Профиль
+    </button>
+
+  </div>
+
+  <section class="history">
+
+    <div class="section-title">
+      Последние номера
+    </div>
+
+    <div
+      class="history-list"
+      id="historyList"
+    >
+      <div class="history-item">
+
+        <span class="history-number">
+          Пока пусто
+        </span>
+
+        <span class="history-rarity">
+          Крути первым
+        </span>
+
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+  /*
+   * NOMEROK
+   * Версия 1.0
+   *
+   * Пока все данные хранятся
+   * только в памяти браузера.
+   *
+   * Следующим этапом подключим
+   * Supabase + Telegram.
+   */
+
+  const balanceElement =
+    document.getElementById("balance");
+
+  const plateNumberElement =
+    document.getElementById("plateNumber");
+
+  const regionElement =
+    document.getElementById("region");
+
+  const rarityElement =
+    document.getElementById("rarity");
+
+  const priceElement =
+    document.getElementById("price");
+
+  const spinButton =
+    document.getElementById("spinButton");
+
+  const totalSpinsElement =
+    document.getElementById("totalSpins");
+
+  const collectionElement =
+    document.getElementById("collection");
+
+  const collectionValueElement =
+    document.getElementById("collectionValue");
+
+  const historyList =
+    document.getElementById("historyList");
+
+  const xpElement =
+    document.getElementById("xp");
+
+  const levelElement =
+    document.getElementById("level");
+
+
+  /*
+   * ИГРОК
+   */
+
+  let balance = 5000;
+
+  let totalSpins = 0;
+
+  let xp = 0;
+
+  let collection = [];
+
+  let spinning = false;
+
+
+  /*
+   * БУКВЫ РОССИЙСКИХ НОМЕРОВ
+   */
+
+  const letters =
+    "АВЕКМНОРСТУХ";
+
+
+  /*
+   * РЕГИОНЫ
+   */
+
+  const regions = [
+    "01",
+    "02",
+    "05",
+    "16",
+    "50",
+    "52",
+    "54",
+    "55",
+    "66",
+    "77",
+    "97",
+    "99",
+    "116",
+    "150",
+    "177",
+    "197",
+    "199",
+    "777"
+  ];
+
+
+  /*
+   * РЕДКОСТИ
+   *
+   * rarity
+   * chance
+   * price
+   * xp
+   */
+
+  const rarities = [
+
+    {
+      name: "⚪ Обычный",
+      className: "common",
+      chance: 68,
+      price: 50,
+      xp: 5
+    },
+
+    {
+      name: "🔵 Редкий",
+      className: "rare",
+      chance: 20,
+      price: 180,
+      xp: 15
+    },
+
+    {
+      name: "🟣 Эпический",
+      className: "epic",
+      chance: 9,
+      price: 700,
+      xp: 40
+    },
+
+    {
+      name: "🟡 Легендарный",
+      className: "legendary",
+      chance: 2.5,
+      price: 3000,
+      xp: 120
+    },
+
+    {
+      name: "🔥 Ультра",
+      className: "ultra",
+      chance: 0.5,
+      price: 15000,
+      xp: 500
+    }
+
+  ];
+
+
+  /*
+   * СЛУЧАЙНАЯ БУКВА
+   */
+
+  function randomLetter() {
+
+    return letters[
+      Math.floor(
+        Math.random() * letters.length
+      )
+    ];
+
+  }
+
+
+  /*
+   * СЛУЧАЙНЫЕ ЦИФРЫ
+   */
+
+  function randomNumber() {
+
+    return String(
+      Math.floor(
+        Math.random() * 1000
+      )
+    ).padStart(3, "0");
+
+  }
+
+
+  /*
+   * СОЗДАНИЕ НОМЕРА
+   */
+
+  function generatePlate() {
+
+    const first =
+      randomLetter();
+
+    const second =
+      randomLetter();
+
+    const third =
+      randomLetter();
+
+    const number =
+      randomNumber();
+
+    const region =
+      regions[
+        Math.floor(
+          Math.random() * regions.length
+        )
+      ];
+
+    return {
+
+      text:
+        first +
+        number +
+        second +
+        third,
+
+      region:
+        region
+
+    };
+
+  }
+
+
+  /*
+   * ВЫБОР РЕДКОСТИ
+   */
+
+  function generateRarity() {
+
+    const random =
+      Math.random() * 100;
+
+    let current = 0;
+
+    for (
+      const rarity of rarities
+    ) {
+
+      current += rarity.chance;
+
+      if (
+        random <= current
+      ) {
+
+        return rarity;
+
+      }
+
+    }
+
+    return rarities[0];
+
+  }
+
+
+  /*
+   * ФОРМАТ БАЛАНСА
+   */
+
+  function formatMoney(value) {
+
+    return Math.floor(value)
+      .toLocaleString("ru-RU");
+
+  }
+
+
+  /*
+   * ОБНОВЛЕНИЕ UI
+   */
+
+  function updateUI() {
+
+    balanceElement.textContent =
+      formatMoney(balance);
+
+    totalSpinsElement.textContent =
+      totalSpins;
+
+    collectionElement.textContent =
+      collection.length;
+
+    const totalValue =
+      collection.reduce(
+        (sum, item) =>
+          sum + item.price,
+        0
+      );
+
+    collectionValueElement.textContent =
+      formatMoney(totalValue) + " ₽";
+
+    xpElement.textContent =
+      xp;
+
+    const level =
+      Math.floor(xp / 100) + 1;
+
+    levelElement.textContent =
+      level;
+
+  }
+
+
+  /*
+   * ИСТОРИЯ
+   */
+
+  function addHistory(
+    plate,
+    rarity
+  ) {
+
+    if (
+      collection.length === 1
+    ) {
+
+      historyList.innerHTML = "";
+
+    }
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "history-item";
+
+    item.innerHTML = `
+
+      <span class="history-number">
+        ${plate.text} ${plate.region}
+      </span>
+
+      <span
+        class="history-rarity"
+        style="color:${getRarityColor(rarity)}"
+      >
+        ${rarity.name}
+      </span>
+
+    `;
+
+    historyList.prepend(item);
+
+    while (
+      historyList.children.length > 5
+    ) {
+
+      historyList.removeChild(
+        historyList.lastChild
+      );
+
+    }
+
+  }
+
+
+  /*
+   * ЦВЕТ РЕДКОСТИ
+   */
+
+  function getRarityColor(
+    rarity
+  ) {
+
+    if (
+      rarity.className === "rare"
+    ) return "#60a5fa";
+
+    if (
+      rarity.className === "epic"
+    ) return "#c084fc";
+
+    if (
+      rarity.className === "legendary"
+    ) return "#fbbf24";
+
+    if (
+      rarity.className === "ultra"
+    ) return "#fb7185";
+
+    return "#a8a8b0";
+
+  }
+
+
+  /*
+   * ПЕРЕБОР НОМЕРОВ
+   */
+
+  function animateSpin(
+    finalPlate,
+    finalRarity
+  ) {
+
+    let ticks = 0;
+
+    const maxTicks = 35;
+
+    plateNumberElement
+      .classList
+      .add("spinning");
+
+    const interval =
+      setInterval(() => {
+
+        const temporary =
+          generatePlate();
+
+        plateNumberElement.textContent =
+          temporary.text;
+
+        regionElement.textContent =
+          temporary.region;
+
+        ticks++;
+
+        if (
+          ticks >= maxTicks
+        ) {
+
+          clearInterval(interval);
+
+          plateNumberElement.textContent =
+            finalPlate.text;
+
+          regionElement.textContent =
+            finalPlate.region;
+
+          rarityElement.textContent =
+            finalRarity.name;
+
+          rarityElement.className =
+            "rarity " +
+            finalRarity.className;
+
+          priceElement.textContent =
+            formatMoney(
+              finalRarity.price
+            );
+
+          plateNumberElement
+            .classList
+            .remove("spinning");
+
+          plateNumberElement
+            .classList
+            .add("win");
+
+          setTimeout(() => {
+
+            plateNumberElement
+              .classList
+              .remove("win");
+
+          }, 500);
+
+          spinning = false;
+
+          spinButton.disabled =
+            false;
+
+          spinButton.textContent =
+            "🎰 КРУТИТЬ • 100 ₽";
+
+          updateUI();
+
+        }
+
+      }, 65);
+
+  }
+
+
+  /*
+   * КРУТКА
+   */
+
+  spinButton.addEventListener(
+    "click",
+    () => {
+
+      if (spinning) {
+        return;
+      }
+
+      if (balance < 100) {
+
+        alert(
+          "Недостаточно денег для крутки."
+        );
+
+        return;
+
+      }
+
+      balance -= 100;
+
+      totalSpins++;
+
+      spinning = true;
+
+      spinButton.disabled =
+        true;
+
+      spinButton.textContent =
+        "⏳ КРУТИМ...";
+
+      const plate =
+        generatePlate();
+
+      const rarity =
+        generateRarity();
+
+      collection.push({
+
+        plate:
+          plate.text,
+
+        region:
+          plate.region,
+
+        rarity:
+          rarity.name,
+
+        price:
+          rarity.price
+
+      });
+
+      xp += rarity.xp;
+
+      addHistory(
+        plate,
+        rarity
+      );
+
+      animateSpin(
+        plate,
+        rarity
+      );
+
+      updateUI();
+
+    }
+  );
+
+
+  /*
+   * СТАРТОВЫЙ UI
+   */
+
+  updateUI();
+
+</script>
+
+</body>
+</html>
